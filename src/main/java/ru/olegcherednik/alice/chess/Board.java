@@ -8,8 +8,14 @@ import lombok.RequiredArgsConstructor;
  * @author Oleg Cherednik
  * @since 16.07.2021
  */
-public class ChessBoard {
+public final class Board {
 
+
+
+    public enum Team {
+        BLACK,
+        WHITE
+    }
 
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     public enum Row {

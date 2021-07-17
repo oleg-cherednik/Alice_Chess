@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Set;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public enum ChessPiece {
+public enum Piece {
     ROOK('r'),
     KNIGHT('n'),
     BISHOP('b'),
@@ -16,6 +16,8 @@ public enum ChessPiece {
 
     private final char id;
 
-    public Set<ChessCell> nextMoves(ChessCell cell)
+    public Set<Cell> nextMoves(Cell cell) {
+        return null;
+    }
 
 }

@@ -12,19 +12,19 @@ import java.util.Map;
  */
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public final class ChessCell {
+public final class Cell {
 
-    private static final Map<String, ChessCell> CACHE = new HashMap<>();
+    private static final Map<String, Cell> CACHE = new HashMap<>();
 
-    private final ChessBoard.Row row;
-    private final ChessBoard.Column col;
+    private final Board.Row row;
+    private final Board.Column col;
     private final String id;
 
-    public static ChessCell create(ChessBoard.Row row, ChessBoard.Column col) {
-        return CACHE.computeIfAbsent(calcId(row, col), id -> new ChessCell(row, col, id));
+    public static Cell create(Board.Row row, Board.Column col) {
+        return CACHE.computeIfAbsent(calcId(row, col), id -> new Cell(row, col, id));
     }
 
-    private static String calcId(ChessBoard.Row row, ChessBoard.Column col) {
+    private static String calcId(Board.Row row, Board.Column col) {
         return Character.toString(row.getId()) + col.getId();
     }
 
