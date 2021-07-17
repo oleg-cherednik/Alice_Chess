@@ -1,6 +1,5 @@
 package ru.olegcherednik.alice.chess;
 
-import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -9,26 +8,9 @@ import java.io.UnsupportedEncodingException;
  */
 public class Main {
 
-    private static final String LINE = "+---+---+---+---+---+---+---+---+";
-    private static final String ROW_LETTERS = "A   B   C   D   E   F   G   H";
-
     public static void main(String... args) throws UnsupportedEncodingException {
-        PrintStream out = new PrintStream(System.out, true, "UTF-8");
-        out.println("\u0006");
-
-        System.out.format("  %s\n", LINE);
-
-        for (int i = 0; i < 8; i++) {
-            System.out.format("%d |", 8 - i);
-
-            for (int j = 0; j < 8; j++) {
-                System.out.format(" %c |", (char)6);
-            }
-
-            System.out.format("\n  %s\n", LINE);
-        }
-
-        System.out.format("    %s\n", ROW_LETTERS);
+        Board board = new Board();
+        board.print(System.out);
     }
 
 //    public void print(){
