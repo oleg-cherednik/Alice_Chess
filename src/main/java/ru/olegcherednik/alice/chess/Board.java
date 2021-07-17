@@ -14,44 +14,52 @@ public final class Board implements Printable {
 
     private final Cell[][] board = {
             {
-                    new Cell(new Piece(Piece.Type.ROOK)), new Cell(new Piece(Piece.Type.KNIGHT)), new Cell(new Piece(Piece.Type.BISHOP)),
-                    new Cell(new Piece(Piece.Type.QUEEN)), new Cell(new Piece(Piece.Type.KING)), new Cell(new Piece(Piece.Type.BISHOP)),
-                    new Cell(new Piece(Piece.Type.KNIGHT)), new Cell(new Piece(Piece.Type.ROOK))
+                    new Cell(new Piece(Piece.Type.ROOK, Game.Team.BLACK)), new Cell(new Piece(Piece.Type.KNIGHT, Game.Team.BLACK)),
+                    new Cell(new Piece(Piece.Type.BISHOP, Game.Team.BLACK)), new Cell(new Piece(Piece.Type.QUEEN, Game.Team.BLACK)),
+                    new Cell(new Piece(Piece.Type.KING, Game.Team.BLACK)), new Cell(new Piece(Piece.Type.BISHOP, Game.Team.BLACK)),
+                    new Cell(new Piece(Piece.Type.KNIGHT, Game.Team.BLACK)), new Cell(new Piece(Piece.Type.ROOK, Game.Team.BLACK))
             },
             {
-                    new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN)),
-                    new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN)),
-                    new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN))
+                    new Cell(new Piece(Piece.Type.PAWN, Game.Team.BLACK)), new Cell(new Piece(Piece.Type.PAWN, Game.Team.BLACK)),
+                    new Cell(new Piece(Piece.Type.PAWN, Game.Team.BLACK)), new Cell(new Piece(Piece.Type.PAWN, Game.Team.BLACK)),
+                    new Cell(new Piece(Piece.Type.PAWN, Game.Team.BLACK)), new Cell(new Piece(Piece.Type.PAWN, Game.Team.BLACK)),
+                    new Cell(new Piece(Piece.Type.PAWN, Game.Team.BLACK)), new Cell(new Piece(Piece.Type.PAWN, Game.Team.BLACK))
             },
             {
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)),
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)),
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY))
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell()
             },
             {
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)),
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)),
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY))
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell()
             },
             {
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)),
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)),
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY))
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell()
             },
             {
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)),
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY)),
-                    new Cell(new Piece(Piece.Type.EMPTY)), new Cell(new Piece(Piece.Type.EMPTY))
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell(),
+                    new Cell(), new Cell()
             },
             {
-                    new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN)),
-                    new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN)),
-                    new Cell(new Piece(Piece.Type.PAWN)), new Cell(new Piece(Piece.Type.PAWN))
+                    new Cell(new Piece(Piece.Type.PAWN, Game.Team.WHITE)), new Cell(new Piece(Piece.Type.PAWN, Game.Team.WHITE)),
+                    new Cell(new Piece(Piece.Type.PAWN, Game.Team.WHITE)), new Cell(new Piece(Piece.Type.PAWN, Game.Team.WHITE)),
+                    new Cell(new Piece(Piece.Type.PAWN, Game.Team.WHITE)), new Cell(new Piece(Piece.Type.PAWN, Game.Team.WHITE)),
+                    new Cell(new Piece(Piece.Type.PAWN, Game.Team.WHITE)), new Cell(new Piece(Piece.Type.PAWN, Game.Team.WHITE))
             },
             {
-                    new Cell(new Piece(Piece.Type.ROOK)), new Cell(new Piece(Piece.Type.KNIGHT)), new Cell(new Piece(Piece.Type.BISHOP)),
-                    new Cell(new Piece(Piece.Type.QUEEN)), new Cell(new Piece(Piece.Type.KING)), new Cell(new Piece(Piece.Type.BISHOP)),
-                    new Cell(new Piece(Piece.Type.KNIGHT)), new Cell(new Piece(Piece.Type.ROOK))
+                    new Cell(new Piece(Piece.Type.ROOK, Game.Team.WHITE)), new Cell(new Piece(Piece.Type.KNIGHT, Game.Team.WHITE)),
+                    new Cell(new Piece(Piece.Type.BISHOP, Game.Team.WHITE)), new Cell(new Piece(Piece.Type.QUEEN, Game.Team.WHITE)),
+                    new Cell(new Piece(Piece.Type.KING, Game.Team.WHITE)), new Cell(new Piece(Piece.Type.BISHOP, Game.Team.WHITE)),
+                    new Cell(new Piece(Piece.Type.KNIGHT, Game.Team.WHITE)), new Cell(new Piece(Piece.Type.ROOK, Game.Team.WHITE))
             }
     };
 
@@ -61,13 +69,26 @@ public final class Board implements Printable {
     private static final String LINE = "\u2554\u2013\u2014\u2013+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+";
     private static final String ROW_LETTERS = "A\u2001  B\u2001  C\u2001  D\u2001  E\u2001  F\u2001  G\u2001  H";
 
+
+    public int getHeight() {
+        return board.length;
+    }
+
+    public int getWidth(int row) {
+        return board[row].length;
+    }
+
+    public Cell getCell(int row, int col) {
+        return board[row][col];
+    }
+
     @Override
     public void print(PrintStream out) {
-//        System.out.format("  %s\n", TOP_LINE);
+        System.out.format("  %s\n", TOP_LINE);
 
         for (int row = 0; row < board.length; row++) {
             out.format("%d ║", board.length - row);
-                                           // "\u2659"
+            // "\u2659"
             for (int col = 0; col < board[row].length; col++) {
                 Cell cell = board[row][col];
                 out.print(' ');
@@ -79,24 +100,26 @@ public final class Board implements Printable {
             out.println();
         }
 
-        System.out.format("\n  %s\n", BOTTOM_LINE);
+        System.out.format("  %s\n", BOTTOM_LINE);
         System.out.format("   %s\n", ROW_LETTERS);
     }
 
-    @RequiredArgsConstructor
     public static final class Cell implements Printable {
 
-        private final Piece piece;
+        private Piece piece;
+
+        public Cell() {
+            this(Piece.EMPTY);
+        }
+
+        public Cell(Piece piece) {
+            this.piece = piece;
+        }
 
         @Override
         public void print(PrintStream out) {
             piece.print(out);
         }
-    }
-
-    public enum Team {
-        BLACK,
-        WHITE
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)

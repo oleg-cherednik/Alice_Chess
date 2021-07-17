@@ -1,5 +1,8 @@
 package ru.olegcherednik.alice.chess;
 
+import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
+import ru.olegcherednik.alice.chess.visualization.SimpleBoardPrintStrategy;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -10,7 +13,8 @@ public class Main {
 
     public static void main(String... args) throws UnsupportedEncodingException {
         Board board = new Board();
-        board.print(System.out);
+        BoardPrintStrategy boardPrintStrategy = SimpleBoardPrintStrategy.INSTANCE;
+        boardPrintStrategy.print(board, System.out);
     }
 
 //    public void print(){
