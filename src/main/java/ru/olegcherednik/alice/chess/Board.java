@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.player.Player;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,47 +17,6 @@ public final class Board {
     public static final int HEIGHT = 8;
 
     private final Cell[][] cells = createCells();
-//            {
-//                    Cell.createTaken(Piece.createBlack(Piece.Type.ROOK)), Cell.createTaken(Piece.createBlack(Piece.Type.KNIGHT)),
-//                    Cell.createTaken(Piece.createBlack(Piece.Type.BISHOP)), Cell.createTaken(Piece.createBlack(Piece.Type.QUEEN)),
-//                    Cell.createTaken(Piece.createBlack(Piece.Type.KING)), Cell.createTaken(Piece.createBlack(Piece.Type.BISHOP)),
-//                    Cell.createTaken(Piece.createBlack(Piece.Type.KNIGHT)), Cell.createTaken(Piece.createBlack(Piece.Type.ROOK))
-//            },
-//            {
-//                    Cell.createTaken(Piece.createBlack(Piece.Type.PAWN)), Cell.createTaken(Piece.createBlack(Piece.Type.PAWN)),
-//                    Cell.createTaken(Piece.createBlack(Piece.Type.PAWN)), Cell.createTaken(Piece.createBlack(Piece.Type.PAWN)),
-//                    Cell.createTaken(Piece.createBlack(Piece.Type.PAWN)), Cell.createTaken(Piece.createBlack(Piece.Type.PAWN)),
-//                    Cell.createTaken(Piece.createBlack(Piece.Type.PAWN)), Cell.createTaken(Piece.createBlack(Piece.Type.PAWN))
-//            },
-//            {
-//                    Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(),
-//                    Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty()
-//            },
-//            {
-//                    Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(),
-//                    Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty()
-//            },
-//            {
-//                    Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(),
-//                    Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty()
-//            },
-//            {
-//                    Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(),
-//                    Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty(), Cell.createEmpty()
-//            },
-//            {
-//                    Cell.createTaken(Piece.createWhite(Piece.Type.PAWN)), Cell.createTaken(Piece.createWhite(Piece.Type.PAWN)),
-//                    Cell.createTaken(Piece.createWhite(Piece.Type.PAWN)), Cell.createTaken(Piece.createWhite(Piece.Type.PAWN)),
-//                    Cell.createTaken(Piece.createWhite(Piece.Type.PAWN)), Cell.createTaken(Piece.createWhite(Piece.Type.PAWN)),
-//                    Cell.createTaken(Piece.createWhite(Piece.Type.PAWN)), Cell.createTaken(Piece.createWhite(Piece.Type.PAWN))
-//            },
-//            {
-//                    Cell.createTaken(Piece.createWhite(Piece.Type.ROOK)), Cell.createTaken(Piece.createWhite(Piece.Type.KNIGHT)),
-//                    Cell.createTaken(Piece.createWhite(Piece.Type.BISHOP)), Cell.createTaken(Piece.createWhite(Piece.Type.QUEEN)),
-//                    Cell.createTaken(Piece.createWhite(Piece.Type.KING)), Cell.createTaken(Piece.createWhite(Piece.Type.BISHOP)),
-//                    Cell.createTaken(Piece.createWhite(Piece.Type.KNIGHT)), Cell.createTaken(Piece.createWhite(Piece.Type.ROOK))
-//            }
-//    };
 
     private static Cell[][] createCells() {
         Cell[][] cells = new Cell[WIDTH][HEIGHT];
@@ -76,24 +34,23 @@ public final class Board {
     }
 
     private void addPlayerPieces(Player player, int mainRow, int pawnsRow) {
-        List<Piece> rooks = player.getPieces(Piece.Type.ROOK);
-        List<Piece> knights = player.getPieces(Piece.Type.KNIGHT);
-        List<Piece> bishops = player.getPieces(Piece.Type.BISHOP);
-        List<Piece> queens = player.getPieces(Piece.Type.QUEEN);
-        List<Piece> kings = player.getPieces(Piece.Type.KING);
-        List<Piece> pawns = player.getPieces(Piece.Type.PAWN);
+        cells[mainRow][0].setPiece(player.getPiece(Piece.Id.ROOK_A));
+        cells[mainRow][1].setPiece(player.getPiece(Piece.Id.KNIGHT_B));
+        cells[mainRow][2].setPiece(player.getPiece(Piece.Id.BISHOP_C));
+        cells[mainRow][3].setPiece(player.getPiece(Piece.Id.QUEEN_D));
+        cells[mainRow][4].setPiece(player.getPiece(Piece.Id.KING_E));
+        cells[mainRow][5].setPiece(player.getPiece(Piece.Id.BISHOP_F));
+        cells[mainRow][6].setPiece(player.getPiece(Piece.Id.KNIGHT_G));
+        cells[mainRow][7].setPiece(player.getPiece(Piece.Id.ROOK_H));
 
-        cells[mainRow][0].setPiece(rooks.get(0));
-        cells[mainRow][1].setPiece(knights.get(0));
-        cells[mainRow][2].setPiece(bishops.get(0));
-        cells[mainRow][3].setPiece(queens.get(0));
-        cells[mainRow][4].setPiece(kings.get(0));
-        cells[mainRow][5].setPiece(bishops.get(1));
-        cells[mainRow][6].setPiece(knights.get(1));
-        cells[mainRow][7].setPiece(rooks.get(1));
-
-        for (int i = 0; i < 8; i++)
-            cells[pawnsRow][i].setPiece(pawns.get(i));
+        cells[pawnsRow][0].setPiece(player.getPiece(Piece.Id.PAWN_A));
+        cells[pawnsRow][1].setPiece(player.getPiece(Piece.Id.PAWN_B));
+        cells[pawnsRow][2].setPiece(player.getPiece(Piece.Id.PAWN_C));
+        cells[pawnsRow][3].setPiece(player.getPiece(Piece.Id.PAWN_D));
+        cells[pawnsRow][4].setPiece(player.getPiece(Piece.Id.PAWN_E));
+        cells[pawnsRow][5].setPiece(player.getPiece(Piece.Id.PAWN_F));
+        cells[pawnsRow][6].setPiece(player.getPiece(Piece.Id.PAWN_G));
+        cells[pawnsRow][7].setPiece(player.getPiece(Piece.Id.PAWN_H));
     }
 
     public int getHeight() {
@@ -115,7 +72,7 @@ public final class Board {
         private Piece piece;
 
         public static Cell createEmpty() {
-            return new Cell(Piece.EMPTY);
+            return new Cell(Piece.NULL);
         }
 
         public static Cell createTaken(Piece piece) {
@@ -123,7 +80,7 @@ public final class Board {
         }
 
         public void setPiece(Piece piece) {
-            this.piece = Optional.ofNullable(piece).orElse(Piece.EMPTY);
+            this.piece = Optional.ofNullable(piece).orElse(Piece.NULL);
         }
 
     }

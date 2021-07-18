@@ -19,7 +19,7 @@ public final class UnicodePiecePrintStrategy implements PiecePrintStrategy {
 
     @Override
     public void print(Piece piece, PrintStream out) {
-        if (piece == Piece.EMPTY)
+        if (piece == Piece.NULL)
             out.print("\u2001");
         else if (piece.getColor() == Player.Color.BLACK)
             out.print(piece.getType().getUnicodeBlack());

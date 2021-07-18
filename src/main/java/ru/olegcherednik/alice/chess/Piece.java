@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.player.Player;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Class implements one piece on the chess board.
  *
@@ -14,19 +12,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 18.07.2021
  */
 @Getter
+@RequiredArgsConstructor
 public final class Piece {
 
-    private static final AtomicInteger ID = new AtomicInteger(0);
-    public static final Piece EMPTY = new Piece(null, null);
+    public static final Piece NULL = new Piece(null, null);
 
-    private final int id;
-    private final Type type;
+    private final Id id;
     private final Player.Color color;
 
-    public Piece(Type type, Player.Color color) {
-        id = ID.getAndIncrement();
-        this.type = type;
-        this.color = color;
+    public Piece.Type getType() {
+        return id.type;
     }
 
     @Getter
@@ -43,5 +38,31 @@ public final class Piece {
         private final String unicodeWhite;
         private final String unicodeBlack;
 
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    public enum Id {
+        ROOK_A(Type.ROOK),
+        KNIGHT_B(Type.KNIGHT),
+        BISHOP_C(Type.BISHOP),
+        QUEEN_D(Type.QUEEN),
+        KING_E(Type.KING),
+        BISHOP_F(Type.BISHOP),
+        KNIGHT_G(Type.KNIGHT),
+        ROOK_H(Type.ROOK),
+        PAWN_A(Type.PAWN),
+        PAWN_B(Type.PAWN),
+        PAWN_C(Type.PAWN),
+        PAWN_D(Type.PAWN),
+        PAWN_E(Type.PAWN),
+        PAWN_F(Type.PAWN),
+        PAWN_G(Type.PAWN),
+        PAWN_H(Type.PAWN);
+
+        private final Type type;
+
+        public Piece create(Player.Color color) {
+            return new Piece(this, color);
+        }
     }
 }

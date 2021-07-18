@@ -19,7 +19,7 @@ public final class AsciiPiecePrintStrategy implements PiecePrintStrategy {
 
     @Override
     public void print(Piece piece, PrintStream out) {
-        if (piece == Piece.EMPTY)
+        if (piece == Piece.NULL)
             out.print(' ');
         else if (piece.getColor() == Player.Color.BLACK)
             out.print(Character.toUpperCase(piece.getType().getAscii()));

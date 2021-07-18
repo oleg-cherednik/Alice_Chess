@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.Piece;
 
-import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -13,7 +12,7 @@ import java.util.function.Function;
  */
 public interface Player {
 
-    List<Piece> getPieces(Piece.Type type);
+    Piece getPiece(Piece.Id id);
 
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     enum Type {

@@ -2,9 +2,8 @@ package ru.olegcherednik.alice.chess.player;
 
 import ru.olegcherednik.alice.chess.Piece;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * @author Oleg Cherednik
@@ -12,32 +11,24 @@ import java.util.stream.Collectors;
  */
 abstract class AbstractPlayer implements Player {
 
-    private final List<Piece> pieces;
+    private final Map<Piece.Id, Piece> pieces;
 
     protected AbstractPlayer(Color color) {
         pieces = createPieces(color);
     }
 
     @Override
-    public final List<Piece> getPieces(Piece.Type type) {
-        return pieces.stream()
-                     .filter(piece -> piece.getType() == type)
-                     .collect(Collectors.toList());
+    public final Piece getPiece(Piece.Id id) {
+        return pieces.getOrDefault(id, Piece.NULL);
     }
 
-    private static List<Piece> createPieces(Color color) {
-        List<Piece> pieces = new ArrayList<>();
-        createPiece(pieces, Piece.Type.ROOK, color, 2);
-        createPiece(pieces, Piece.Type.KNIGHT, color, 2);
-        createPiece(pieces, Piece.Type.BISHOP, color, 2);
-        createPiece(pieces, Piece.Type.QUEEN, color, 1);
-        createPiece(pieces, Piece.Type.KING, color, 1);
-        createPiece(pieces, Piece.Type.PAWN, color, 8);
+    private static Map<Piece.Id, Piece> createPieces(Color color) {
+        Map<Piece.Id, Piece> pieces = new EnumMap<>(Piece.Id.class);
+
+        for (Piece.Id id : Piece.Id.values())
+            pieces.put(id, id.create(color));
+
         return pieces;
     }
 
-    private static void createPiece(List<Piece> pieces, Piece.Type type, Color color, int total) {
-        for (int i = 0; i < total; i++)
-            pieces.add(new Piece(type, color));
-    }
 }
