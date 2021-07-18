@@ -1,6 +1,7 @@
 package ru.olegcherednik.alice.chess.player;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.Piece;
 
@@ -26,8 +27,12 @@ public interface Player {
         }
     }
 
+    @Getter
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     enum Color {
-        BLACK,
-        WHITE;
+        BLACK("Black"),
+        WHITE("Whites");
+
+        private final String title;
     }
 }

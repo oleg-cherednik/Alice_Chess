@@ -2,6 +2,7 @@ package ru.olegcherednik.alice.chess;
 
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.Setter;
 import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
 import ru.olegcherednik.alice.chess.visualization.ascii.AsciiBoardPrintStrategy;
@@ -28,8 +29,8 @@ public final class Game {
         playerWhite = context.createWhitePlayer();
         playerBlack = context.createBlackPlayer();
         board = new Board(playerBlack, playerWhite);
-        play = new Play(playerWhite);
         scan = new Scanner(context.in);
+        play = new Play(scan, context.out, playerWhite);
     }
 
     public void start() {
@@ -43,13 +44,15 @@ public final class Game {
 
         while (true) {
             context.out.println();
-            context.out.format("Move %d (Player White) > ", moveNo++);
+            context.out.format("Move %d (%s) > ", moveNo++, play.nextMovePlayer);
             String move = scan.nextLine();
             Board.Cell cellFrom = board.getCell(move.substring(0, 2));
             Board.Cell cellTo = board.getCell(move.substring(3));
 
             cellTo.setPiece(cellFrom.getPiece());
             cellFrom.clear();
+
+            play.setNextMovePlayer(playerWhite == play.nextMovePlayer ? playerBlack : playerWhite);
 
             print();
         }
@@ -61,11 +64,17 @@ public final class Game {
 
     public static final class Play {
 
+        private final Scanner scan;
+        private final PrintStream out;
+        @Setter
         private Player nextMovePlayer;
 
-        public Play(Player nextMovePlayer) {
+        public Play(Scanner scan, PrintStream out, Player nextMovePlayer) {
+            this.scan = scan;
+            this.out = out;
             this.nextMovePlayer = nextMovePlayer;
         }
+
     }
 
     @Builder

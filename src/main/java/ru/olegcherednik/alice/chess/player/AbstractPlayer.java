@@ -11,9 +11,11 @@ import java.util.Map;
  */
 abstract class AbstractPlayer implements Player {
 
-    private final Map<Piece.Id, Piece> pieces;
+    protected final Color color;
+    protected final Map<Piece.Id, Piece> pieces;
 
     protected AbstractPlayer(Color color) {
+        this.color = color;
         pieces = createPieces(color);
     }
 

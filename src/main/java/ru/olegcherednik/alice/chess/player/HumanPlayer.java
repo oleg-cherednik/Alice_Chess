@@ -9,4 +9,9 @@ public class HumanPlayer extends AbstractPlayer {
     public HumanPlayer(Color color) {
         super(color);
     }
+
+    @Override
+    public String toString() {
+        return "Player " + color.getTitle();
+    }
 }
