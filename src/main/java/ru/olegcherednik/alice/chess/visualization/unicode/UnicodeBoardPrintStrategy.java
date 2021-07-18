@@ -28,7 +28,7 @@ public final class UnicodeBoardPrintStrategy implements BoardPrintStrategy {
         for (int row = 0; row < board.getHeight(); row++) {
             out.format("%d │", board.getHeight() - row);
 
-            for (int col = 0; col < board.getWidth(row); col++) {
+            for (int col = 0; col < board.getWidth(); col++) {
                 Board.Cell cell = board.getCell(row, col);
                 out.print(' ');
                 UnicodeCellPrintStrategy.INSTANCE.print(cell, out);

@@ -3,6 +3,9 @@ package ru.olegcherednik.alice.chess;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import ru.olegcherednik.alice.chess.player.Player;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class implements one piece on the chess board.
@@ -11,20 +14,19 @@ import lombok.RequiredArgsConstructor;
  * @since 18.07.2021
  */
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Piece {
 
+    private static final AtomicInteger ID = new AtomicInteger(0);
     public static final Piece EMPTY = new Piece(null, null);
 
+    private final int id;
     private final Type type;
-    private final Game.Team team;
+    private final Player.Color color;
 
-    public static Piece createBlack(Type type) {
-        return new Piece(type, Game.Team.BLACK);
-    }
-
-    public static Piece createWhite(Type type) {
-        return new Piece(type, Game.Team.WHITE);
+    public Piece(Type type, Player.Color color) {
+        id = ID.getAndIncrement();
+        this.type = type;
+        this.color = color;
     }
 
     @Getter

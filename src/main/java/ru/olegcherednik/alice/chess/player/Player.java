@@ -1,0 +1,34 @@
+package ru.olegcherednik.alice.chess.player;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import ru.olegcherednik.alice.chess.Piece;
+
+import java.util.List;
+import java.util.function.Function;
+
+/**
+ * @author Oleg Cherednik
+ * @since 18.07.2021
+ */
+public interface Player {
+
+    List<Piece> getPieces(Piece.Type type);
+
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    enum Type {
+        HUMAN(HumanPlayer::new),
+        BOT(BotPlayer::new);
+
+        private final Function<Color, Player> createPlayer;
+
+        public final Player create(Color color) {
+            return createPlayer.apply(color);
+        }
+    }
+
+    enum Color {
+        BLACK,
+        WHITE;
+    }
+}
