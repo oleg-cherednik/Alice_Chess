@@ -1,7 +1,7 @@
 package ru.olegcherednik.alice.chess;
 
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
-import ru.olegcherednik.alice.chess.visualization.UnicodeBoardPrintStrategy;
+import ru.olegcherednik.alice.chess.visualization.unicode.UnicodeBoardPrintStrategy;
 
 import java.io.UnsupportedEncodingException;
 

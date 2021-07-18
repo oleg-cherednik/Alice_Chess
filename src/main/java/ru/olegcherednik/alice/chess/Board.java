@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.io.PrintStream;
-
 /**
  * @author Oleg Cherednik
  * @since 16.07.2021
@@ -63,13 +61,6 @@ public final class Board {
             }
     };
 
-    private static final String TOP_LINE = "╔═══╤═══╤═══╤═══╤═══╤═══╤═══╤═══╗";
-    private static final String BOTTOM_LINE = "╚═══╧═══╧═══╧═══╧═══╧═══╧═══╧═══╝";
-
-    private static final String LINE = "\u2554\u2013\u2014\u2013+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+";
-    private static final String ROW_LETTERS = "A\u2001  B\u2001  C\u2001  D\u2001  E\u2001  F\u2001  G\u2001  H";
-
-
     public int getHeight() {
         return board.length;
     }
@@ -82,28 +73,8 @@ public final class Board {
         return board[row][col];
     }
 
-    public void print(PrintStream out) {
-        System.out.format("  %s\n", TOP_LINE);
-
-        for (int row = 0; row < board.length; row++) {
-            out.format("%d ║", board.length - row);
-            // "\u2659"
-            for (int col = 0; col < board[row].length; col++) {
-                Cell cell = board[row][col];
-                out.print(' ');
-                cell.print(out);
-                out.print(" |");
-            }
-
-            //            System.out.format("\n  %s\n", LINE);
-            out.println();
-        }
-
-        System.out.format("  %s\n", BOTTOM_LINE);
-        System.out.format("   %s\n", ROW_LETTERS);
-    }
-
-    public static final class Cell implements Printable {
+    @Getter
+    public static final class Cell {
 
         private Piece piece;
 
@@ -113,16 +84,6 @@ public final class Board {
 
         public Cell(Piece piece) {
             this.piece = piece;
-        }
-
-        @Override
-        public void print(PrintStream out) {
-            piece.print(out);
-        }
-
-        @Override
-        public void printUtf8(PrintStream out) {
-            piece.printUtf8(out);
         }
     }
 

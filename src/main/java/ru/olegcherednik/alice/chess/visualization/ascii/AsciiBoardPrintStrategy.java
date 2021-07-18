@@ -1,8 +1,9 @@
-package ru.olegcherednik.alice.chess.visualization;
+package ru.olegcherednik.alice.chess.visualization.ascii;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.olegcherednik.alice.chess.Board;
+import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
 
 import java.io.PrintStream;
 
@@ -11,7 +12,7 @@ import java.io.PrintStream;
  * @since 18.07.2021
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class AsciiBoardPrintStrategy implements BoardPrintStrategy {
+public final class AsciiBoardPrintStrategy implements BoardPrintStrategy, AsciiPrintStrategy {
 
     public static final AsciiBoardPrintStrategy INSTANCE = new AsciiBoardPrintStrategy();
 
@@ -28,7 +29,7 @@ public final class AsciiBoardPrintStrategy implements BoardPrintStrategy {
             for (int col = 0; col < board.getWidth(row); col++) {
                 Board.Cell cell = board.getCell(row, col);
                 out.print(' ');
-                cell.print(out);
+                AsciiCellPrintStrategy.INSTANCE.print(cell, out);
                 out.print(" |");
             }
 

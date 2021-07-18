@@ -1,8 +1,9 @@
-package ru.olegcherednik.alice.chess.visualization;
+package ru.olegcherednik.alice.chess.visualization.unicode;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.olegcherednik.alice.chess.Board;
+import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
 
 import java.io.PrintStream;
 
@@ -11,7 +12,7 @@ import java.io.PrintStream;
  * @since 18.07.2021
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class UnicodeBoardPrintStrategy implements BoardPrintStrategy {
+public final class UnicodeBoardPrintStrategy implements BoardPrintStrategy, UnicodePrintStrategy {
 
     public static final UnicodeBoardPrintStrategy INSTANCE = new UnicodeBoardPrintStrategy();
 
@@ -30,7 +31,7 @@ public final class UnicodeBoardPrintStrategy implements BoardPrintStrategy {
             for (int col = 0; col < board.getWidth(row); col++) {
                 Board.Cell cell = board.getCell(row, col);
                 out.print(' ');
-                cell.printUtf8(out);
+                UnicodeCellPrintStrategy.INSTANCE.print(cell, out);
                 out.print(" │");
             }
 
