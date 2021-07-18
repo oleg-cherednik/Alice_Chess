@@ -40,26 +40,28 @@ public final class Piece {
 
     }
 
+    @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     public enum Id {
-        ROOK_A(Type.ROOK),
-        KNIGHT_B(Type.KNIGHT),
-        BISHOP_C(Type.BISHOP),
-        QUEEN_D(Type.QUEEN),
-        KING_E(Type.KING),
-        BISHOP_F(Type.BISHOP),
-        KNIGHT_G(Type.KNIGHT),
-        ROOK_H(Type.ROOK),
-        PAWN_A(Type.PAWN),
-        PAWN_B(Type.PAWN),
-        PAWN_C(Type.PAWN),
-        PAWN_D(Type.PAWN),
-        PAWN_E(Type.PAWN),
-        PAWN_F(Type.PAWN),
-        PAWN_G(Type.PAWN),
-        PAWN_H(Type.PAWN);
+        ROOK_A(Type.ROOK, 0),
+        KNIGHT_B(Type.KNIGHT, 1),
+        BISHOP_C(Type.BISHOP, 2),
+        QUEEN_D(Type.QUEEN, 3),
+        KING_E(Type.KING, 4),
+        BISHOP_F(Type.BISHOP, 5),
+        KNIGHT_G(Type.KNIGHT, 6),
+        ROOK_H(Type.ROOK, 7),
+        PAWN_A(Type.PAWN, 0),
+        PAWN_B(Type.PAWN, 1),
+        PAWN_C(Type.PAWN, 2),
+        PAWN_D(Type.PAWN, 3),
+        PAWN_E(Type.PAWN, 4),
+        PAWN_F(Type.PAWN, 5),
+        PAWN_G(Type.PAWN, 6),
+        PAWN_H(Type.PAWN, 7);
 
         private final Type type;
+        private final int col;
 
         public Piece create(Player.Color color) {
             return new Piece(this, color);

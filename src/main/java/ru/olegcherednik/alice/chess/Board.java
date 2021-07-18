@@ -34,23 +34,11 @@ public final class Board {
     }
 
     private void addPlayerPieces(Player player, int mainRow, int pawnsRow) {
-        cells[mainRow][0].setPiece(player.getPiece(Piece.Id.ROOK_A));
-        cells[mainRow][1].setPiece(player.getPiece(Piece.Id.KNIGHT_B));
-        cells[mainRow][2].setPiece(player.getPiece(Piece.Id.BISHOP_C));
-        cells[mainRow][3].setPiece(player.getPiece(Piece.Id.QUEEN_D));
-        cells[mainRow][4].setPiece(player.getPiece(Piece.Id.KING_E));
-        cells[mainRow][5].setPiece(player.getPiece(Piece.Id.BISHOP_F));
-        cells[mainRow][6].setPiece(player.getPiece(Piece.Id.KNIGHT_G));
-        cells[mainRow][7].setPiece(player.getPiece(Piece.Id.ROOK_H));
-
-        cells[pawnsRow][0].setPiece(player.getPiece(Piece.Id.PAWN_A));
-        cells[pawnsRow][1].setPiece(player.getPiece(Piece.Id.PAWN_B));
-        cells[pawnsRow][2].setPiece(player.getPiece(Piece.Id.PAWN_C));
-        cells[pawnsRow][3].setPiece(player.getPiece(Piece.Id.PAWN_D));
-        cells[pawnsRow][4].setPiece(player.getPiece(Piece.Id.PAWN_E));
-        cells[pawnsRow][5].setPiece(player.getPiece(Piece.Id.PAWN_F));
-        cells[pawnsRow][6].setPiece(player.getPiece(Piece.Id.PAWN_G));
-        cells[pawnsRow][7].setPiece(player.getPiece(Piece.Id.PAWN_H));
+        for (Piece.Id id : Piece.Id.values()) {
+            int row = id.getType() == Piece.Type.PAWN ? pawnsRow : mainRow;
+            int col = id.getCol();
+            cells[row][col].setPiece(player.getPiece(id));
+        }
     }
 
     public int getHeight() {
