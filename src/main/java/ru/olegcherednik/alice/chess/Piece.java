@@ -24,6 +24,11 @@ public final class Piece {
         return id.type;
     }
 
+    @Override
+    public String toString() {
+        return id + "_" + color;
+    }
+
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     public enum Type {

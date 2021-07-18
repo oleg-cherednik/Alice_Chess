@@ -23,7 +23,7 @@ public final class Board {
 
         for (int row = 0; row < WIDTH; row++)
             for (int col = 0; col < HEIGHT; col++)
-                cells[row][col] = Cell.createEmpty();
+                cells[row][col] = Cell.createEmpty(getCellId(row, col));
 
         return cells;
     }
@@ -53,22 +53,39 @@ public final class Board {
         return cells[row][col];
     }
 
+    public Cell getCell(String id) {
+        int row = '8' - id.charAt(1);
+        int col = id.charAt(0) - 'A';
+        return cells[row][col];
+    }
+
+    public static String getCellId(int row, int col) {
+        return (char)('A' + col) + String.valueOf(8 - row);
+    }
+
     @Getter
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Cell {
 
+        /** Format is D5 or A1 */
+        private final String id;
         private Piece piece;
 
-        public static Cell createEmpty() {
-            return new Cell(Piece.NULL);
+        public static Cell createEmpty(String id) {
+            return new Cell(id, Piece.NULL);
         }
 
-        public static Cell createTaken(Piece piece) {
-            return new Cell(piece);
+        public void clear() {
+            setPiece(null);
         }
 
         public void setPiece(Piece piece) {
             this.piece = Optional.ofNullable(piece).orElse(Piece.NULL);
+        }
+
+        @Override
+        public String toString() {
+            return id + (piece == Piece.NULL ? "" : " (" + piece + ')');
         }
 
     }

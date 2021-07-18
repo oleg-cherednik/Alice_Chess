@@ -17,9 +17,11 @@ public class Main {
                                            .boardPrintStrategy(UnicodeBoardPrintStrategy.INSTANCE)
                                            .playerWhiteType(Player.Type.HUMAN)
                                            .playerBlackType(Player.Type.HUMAN)
+                                           .in(System.in)
+                                           .out(System.out)
                                            .build();
         Game game = new Game(context);
-        game.print(System.out);
+        game.start();
     }
 
 }

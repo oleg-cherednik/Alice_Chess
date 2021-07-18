@@ -6,7 +6,9 @@ import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
 import ru.olegcherednik.alice.chess.visualization.ascii.AsciiBoardPrintStrategy;
 
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 /**
  * @author Oleg Cherednik
@@ -18,16 +20,52 @@ public final class Game {
     private final Player playerWhite;
     private final Player playerBlack;
     private final Board board;
+    private final Play play;
+    private final Scanner scan;
 
     public Game(Context context) {
         this.context = context;
         playerWhite = context.createWhitePlayer();
         playerBlack = context.createBlackPlayer();
         board = new Board(playerBlack, playerWhite);
+        play = new Play(playerWhite);
+        scan = new Scanner(context.in);
     }
 
-    public void print(PrintStream out) {
-        context.boardPrintStrategy.print(board, out);
+    public void start() {
+        context.out.println("LET'S PLAY CHESS!!!");
+        context.out.println("Player White vs Player Black");
+        context.out.println();
+
+        print();
+
+        int moveNo = 1;
+
+        while (true) {
+            context.out.println();
+            context.out.format("Move %d (Player White) > ", moveNo++);
+            String move = scan.nextLine();
+            Board.Cell cellFrom = board.getCell(move.substring(0, 2));
+            Board.Cell cellTo = board.getCell(move.substring(3));
+
+            cellTo.setPiece(cellFrom.getPiece());
+            cellFrom.clear();
+
+            print();
+        }
+    }
+
+    private void print() {
+        context.boardPrintStrategy.print(board, context.out);
+    }
+
+    public static final class Play {
+
+        private Player nextMovePlayer;
+
+        public Play(Player nextMovePlayer) {
+            this.nextMovePlayer = nextMovePlayer;
+        }
     }
 
     @Builder
@@ -42,6 +80,12 @@ public final class Game {
         @NonNull
         @Builder.Default
         private final Player.Type playerBlackType = Player.Type.HUMAN;
+        @NonNull
+        @Builder.Default
+        private final InputStream in = System.in;
+        @NonNull
+        @Builder.Default
+        private final PrintStream out = System.out;
 
         public Player createWhitePlayer() {
             return playerWhiteType.create(Player.Color.WHITE);
@@ -52,4 +96,5 @@ public final class Game {
         }
 
     }
+
 }
