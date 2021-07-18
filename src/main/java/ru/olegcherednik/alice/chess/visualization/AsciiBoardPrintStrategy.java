@@ -11,13 +11,11 @@ import java.io.PrintStream;
  * @since 18.07.2021
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SimpleBoardPrintStrategy implements BoardPrintStrategy {
+public final class AsciiBoardPrintStrategy implements BoardPrintStrategy {
 
-    public static final SimpleBoardPrintStrategy INSTANCE = new SimpleBoardPrintStrategy();
+    public static final AsciiBoardPrintStrategy INSTANCE = new AsciiBoardPrintStrategy();
 
     private static final String LINE = "+---+---+---+---+---+---+---+---+";
-
-    //    private static final String LINE = "\u2554\u2013\u2014\u2013+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+-\u2014-+";
     private static final String ROW_LETTERS = "A   B   C   D   E   F   G   H";
 
     @Override

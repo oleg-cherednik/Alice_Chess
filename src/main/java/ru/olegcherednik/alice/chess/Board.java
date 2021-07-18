@@ -10,7 +10,7 @@ import java.io.PrintStream;
  * @author Oleg Cherednik
  * @since 16.07.2021
  */
-public final class Board implements Printable {
+public final class Board {
 
     private final Cell[][] board = {
             {
@@ -82,7 +82,6 @@ public final class Board implements Printable {
         return board[row][col];
     }
 
-    @Override
     public void print(PrintStream out) {
         System.out.format("  %s\n", TOP_LINE);
 
@@ -119,6 +118,11 @@ public final class Board implements Printable {
         @Override
         public void print(PrintStream out) {
             piece.print(out);
+        }
+
+        @Override
+        public void printUtf8(PrintStream out) {
+            piece.printUtf8(out);
         }
     }
 

@@ -9,4 +9,6 @@ import java.io.PrintStream;
 public interface Printable {
 
     void print(PrintStream out);
+
+    void printUtf8(PrintStream out);
 }
