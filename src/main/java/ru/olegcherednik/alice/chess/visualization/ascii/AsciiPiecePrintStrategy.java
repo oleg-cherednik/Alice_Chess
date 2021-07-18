@@ -13,7 +13,7 @@ import java.io.PrintStream;
  * @since 18.07.2021
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class AsciiPiecePrintStrategy implements PiecePrintStrategy, AsciiPrintStrategy {
+public final class AsciiPiecePrintStrategy implements PiecePrintStrategy {
 
     public static final AsciiPiecePrintStrategy INSTANCE = new AsciiPiecePrintStrategy();
 

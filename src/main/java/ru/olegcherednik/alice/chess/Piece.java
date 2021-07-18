@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Set;
-
 /**
  * Class implements one piece on the chess board.
  *
@@ -13,13 +11,21 @@ import java.util.Set;
  * @since 18.07.2021
  */
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Piece {
 
     public static final Piece EMPTY = new Piece(null, null);
 
     private final Type type;
     private final Game.Team team;
+
+    public static Piece createBlack(Type type) {
+        return new Piece(type, Game.Team.BLACK);
+    }
+
+    public static Piece createWhite(Type type) {
+        return new Piece(type, Game.Team.WHITE);
+    }
 
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -35,8 +41,5 @@ public final class Piece {
         private final String unicodeWhite;
         private final String unicodeBlack;
 
-        public Set<Cell> nextMoves(Cell cell) {
-            return null;
-        }
     }
 }

@@ -12,7 +12,7 @@ import java.io.PrintStream;
  * @since 18.07.2021
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class UnicodeCellPrintStrategy implements CellPrintStrategy, UnicodePrintStrategy {
+public final class UnicodeCellPrintStrategy implements CellPrintStrategy {
 
     public static final UnicodeCellPrintStrategy INSTANCE = new UnicodeCellPrintStrategy();
 

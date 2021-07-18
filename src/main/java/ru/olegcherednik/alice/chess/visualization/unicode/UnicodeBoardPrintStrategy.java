@@ -12,7 +12,7 @@ import java.io.PrintStream;
  * @since 18.07.2021
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class UnicodeBoardPrintStrategy implements BoardPrintStrategy, UnicodePrintStrategy {
+public final class UnicodeBoardPrintStrategy implements BoardPrintStrategy {
 
     public static final UnicodeBoardPrintStrategy INSTANCE = new UnicodeBoardPrintStrategy();
 

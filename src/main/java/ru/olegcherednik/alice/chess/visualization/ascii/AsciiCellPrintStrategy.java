@@ -12,7 +12,7 @@ import java.io.PrintStream;
  * @since 18.07.2021
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class AsciiCellPrintStrategy implements CellPrintStrategy, AsciiPrintStrategy {
+public final class AsciiCellPrintStrategy implements CellPrintStrategy {
 
     public static final AsciiCellPrintStrategy INSTANCE = new AsciiCellPrintStrategy();
 

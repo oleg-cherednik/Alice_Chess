@@ -13,19 +13,19 @@ import java.io.PrintStream;
  * @since 18.07.2021
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class UnicodePiecePrintStrategy implements PiecePrintStrategy, UnicodePrintStrategy {
+public final class UnicodePiecePrintStrategy implements PiecePrintStrategy {
 
     public static final UnicodePiecePrintStrategy INSTANCE = new UnicodePiecePrintStrategy();
 
     @Override
     public void print(Piece piece, PrintStream out) {
         if (piece == Piece.EMPTY)
-            out.print(LONG_SPACE);
+            out.print("\u2001");
         else if (piece.getTeam() == Game.Team.BLACK)
             out.print(piece.getType().getUnicodeBlack());
         else if (piece.getTeam() == Game.Team.WHITE)
             out.print(piece.getType().getUnicodeWhite());
         else
-            out.print(LONG_SPACE);
+            out.print("\u2001");
     }
 }
