@@ -1,8 +1,10 @@
-package ru.olegcherednik.alice.chess;
+package ru.olegcherednik.alice.chess.piece;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import ru.olegcherednik.alice.chess.Board;
+import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
 
@@ -49,23 +51,17 @@ public final class Piece {
         PAWN("Pawn", 'p', "♙", "♟") {
             @Override
             public Set<String> getAvailableMoves(String fromCellId, GameContext context) {
-                Player.Color player = context.player();
+                Player.Color player = context.currentPlayer();
                 int col = Processor.getCellCol(fromCellId);
                 int row = Processor.getCellRow(fromCellId);
                 Set<String> cellIds = new HashSet<>();
 
                 if (player == Player.Color.WHITE) {
-                    String toCellId = Processor.getCellId(col, row - 1);
-                    Board.Cell cell = context.cell(toCellId);
-
-                    if(cell.isEmpty())
-                        cellIds.add(toCellId);
-
-                    addWithinBoardCell(cellIds, col, row - 1, context);
-                    addWithinBoardCell(cellIds, col, row - 2, context);
+                    if (addCell(cellIds, col, row - 1, context))
+                        addCell(cellIds, col, row - 2, context);
                 } else if (player == Player.Color.BLACK) {
-                    addWithinBoardCell(cellIds, col, row + 1, context);
-                    addWithinBoardCell(cellIds, col, row + 2, context);
+                    if (addCell(cellIds, col, row + 1, context))
+                        addCell(cellIds, col, row + 2, context);
                 } else
                     return Collections.emptySet();
 
@@ -83,11 +79,16 @@ public final class Piece {
             return Collections.emptySet();
         }
 
-        protected static void addWithinBoardCell(Set<String> cellIds, int col, int row, GameContext context) {
+        protected static boolean addCell(Set<String> cellIds, int col, int row, GameContext context) {
+            Player.Color player = context.currentPlayer();
             String toCellId = Processor.getCellId(col, row);
+            Board.Cell cell = context.cell(toCellId);
+            boolean valid = cell.isEmpty() || cell.getPiece().getColor() != player;
 
-            if (context.cell(toCellId) != Board.Cell.NULL)
+            if (valid)
                 cellIds.add(toCellId);
+
+            return valid;
         }
 
     }

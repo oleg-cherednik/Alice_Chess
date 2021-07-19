@@ -53,7 +53,7 @@ public final class Game implements GameContext {
 
 
 
-                processor.switchToPlayer(playerWhite == processor.getPlayer() ? playerBlack : playerWhite);
+                processor.switchToPlayer(playerWhite == processor.getCurrentPlayer() ? playerBlack : playerWhite);
             } catch (ChessException e) {
                 context.err.println(e.getMessage());
                 Thread.sleep(200);
@@ -83,8 +83,8 @@ public final class Game implements GameContext {
     }
 
     @Override
-    public Player.Color player() {
-        return processor.getPlayer().getColor();
+    public Player.Color currentPlayer() {
+        return processor.getCurrentPlayer().getColor();
     }
 
     @Builder

@@ -1,7 +1,7 @@
 package ru.olegcherednik.alice.chess.move.validations;
 
 import ru.olegcherednik.alice.chess.GameContext;
-import ru.olegcherednik.alice.chess.Piece;
+import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
 import ru.olegcherednik.alice.chess.move.Ply;
 

@@ -17,6 +17,6 @@ public interface GameContext {
 
     Board.Cell cell(String cellId);
 
-    Player.Color player();
+    Player.Color currentPlayer();
 
 }

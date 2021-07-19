@@ -17,28 +17,28 @@ public final class Processor {
     private final List<Ply> plies = new ArrayList<>();
     private final ValidationProcessor validationProcessor = new ValidationProcessor();
     @Getter
-    private Player player;
+    private Player currentPlayer;
     @Getter
     private int moveNo;
 
-    public Processor(Player player) {
-        this.player = player;
+    public Processor(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public Ply doNextPly(GameContext context) {
-        context.out().format("Move %d (%s) > ", moveNo + 1, player.getColor().getTitle());
+        context.out().format("Move %d (%s) > ", moveNo + 1, currentPlayer.getColor().getTitle());
 
-        String strPly = normalizeStrPly(player.nextPly(context));
+        String strPly = normalizeStrPly(currentPlayer.nextPly(context));
         validationProcessor.validate(strPly, context);
 
-        Ply ply = Ply.createFromStr(strPly, moveNo, player.getColor());
+        Ply ply = Ply.createFromStr(strPly, moveNo, currentPlayer.getColor());
         plies.add(ply);
 
         return ply;
     }
 
     public void switchToPlayer(Player player) {
-        this.player = player;
+        this.currentPlayer = player;
 
         if (player.getColor() == Player.Color.WHITE)
             moveNo++;

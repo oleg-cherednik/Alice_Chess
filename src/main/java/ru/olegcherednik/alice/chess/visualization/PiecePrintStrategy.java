@@ -1,6 +1,6 @@
 package ru.olegcherednik.alice.chess.visualization;
 
-import ru.olegcherednik.alice.chess.Piece;
+import ru.olegcherednik.alice.chess.piece.Piece;
 
 import java.io.PrintStream;
 

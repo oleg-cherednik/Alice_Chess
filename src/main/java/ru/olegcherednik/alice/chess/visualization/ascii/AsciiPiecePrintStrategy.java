@@ -2,7 +2,7 @@ package ru.olegcherednik.alice.chess.visualization.ascii;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import ru.olegcherednik.alice.chess.Piece;
+import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.PiecePrintStrategy;
 

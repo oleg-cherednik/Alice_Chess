@@ -1,7 +1,7 @@
 package ru.olegcherednik.alice.chess.player;
 
 import lombok.Getter;
-import ru.olegcherednik.alice.chess.Piece;
+import ru.olegcherednik.alice.chess.piece.Piece;
 
 import java.util.EnumMap;
 import java.util.Map;
