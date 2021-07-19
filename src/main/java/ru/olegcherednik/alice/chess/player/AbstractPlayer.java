@@ -1,5 +1,6 @@
 package ru.olegcherednik.alice.chess.player;
 
+import lombok.Getter;
 import ru.olegcherednik.alice.chess.Piece;
 
 import java.util.EnumMap;
@@ -11,6 +12,7 @@ import java.util.Map;
  */
 abstract class AbstractPlayer implements Player {
 
+    @Getter
     protected final Color color;
     protected final Map<Piece.Id, Piece> pieces;
 

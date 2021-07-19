@@ -11,15 +11,13 @@ import java.io.UnsupportedEncodingException;
  */
 public class Main {
 
-    public static void main(String... args) throws UnsupportedEncodingException {
-        Game.Context context = Game.Context.builder()
+    public static void main(String... args) throws UnsupportedEncodingException, InterruptedException {
+        Game.InitialContext context = Game.InitialContext.builder()
 //                                           .boardPrintStrategy(AsciiBoardPrintStrategy.INSTANCE)
-                                           .boardPrintStrategy(UnicodeBoardPrintStrategy.INSTANCE)
-                                           .playerWhiteType(Player.Type.HUMAN)
-                                           .playerBlackType(Player.Type.HUMAN)
-                                           .in(System.in)
-                                           .out(System.out)
-                                           .build();
+                                                         .boardPrintStrategy(UnicodeBoardPrintStrategy.INSTANCE)
+                                                         .playerWhiteType(Player.Type.HUMAN)
+                                                         .playerBlackType(Player.Type.HUMAN)
+                                                         .build();
         Game game = new Game(context);
         game.start();
     }

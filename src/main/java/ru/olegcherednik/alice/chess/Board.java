@@ -3,6 +3,7 @@ package ru.olegcherednik.alice.chess;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
 
 import java.util.Optional;
@@ -23,7 +24,7 @@ public final class Board {
 
         for (int row = 0; row < WIDTH; row++)
             for (int col = 0; col < HEIGHT; col++)
-                cells[row][col] = Cell.createEmpty(getCellId(row, col));
+                cells[row][col] = Cell.createEmpty(Processor.getCellId(row, col));
 
         return cells;
     }
@@ -53,14 +54,10 @@ public final class Board {
         return cells[row][col];
     }
 
-    public Cell getCell(String id) {
-        int row = '8' - id.charAt(1);
-        int col = id.charAt(0) - 'A';
+    public Cell getCell(String cellId) {
+        int row = Processor.getCellRow(cellId);
+        int col = Processor.getCellCol(cellId);
         return cells[row][col];
-    }
-
-    public static String getCellId(int row, int col) {
-        return (char)('A' + col) + String.valueOf(8 - row);
     }
 
     @Getter
@@ -75,6 +72,11 @@ public final class Board {
             return new Cell(id, Piece.NULL);
         }
 
+
+        public boolean isEmpty() {
+            return piece == Piece.NULL;
+        }
+
         public void clear() {
             setPiece(null);
         }
@@ -85,7 +87,7 @@ public final class Board {
 
         @Override
         public String toString() {
-            return id + (piece == Piece.NULL ? "" : " (" + piece + ')');
+            return id + (isEmpty() ? "" : " (" + piece + ')');
         }
 
     }

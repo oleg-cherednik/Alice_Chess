@@ -32,12 +32,12 @@ public final class Piece {
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     public enum Type {
-        ROOK('r', "\u2656", "\u265C"),
-        KNIGHT('n', "\u2658", "\u265E"),
-        BISHOP('b', "\u2657", "\u265D"),
-        QUEEN('q', "\u2655", "\u265B"),
-        KING('k', "\u2654", "\u265A"),
-        PAWN('p', "\u2659", "\u265F");
+        ROOK('r', "♖", "♜"),
+        KNIGHT('n', "♘", "♞"),
+        BISHOP('b', "♗", "♝"),
+        QUEEN('q', "♕", "♛"),
+        KING('k', "♔", "♚"),
+        PAWN('p', "♙", "♟");
 
         private final char ascii;
         private final String unicodeWhite;

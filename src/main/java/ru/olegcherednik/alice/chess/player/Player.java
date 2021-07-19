@@ -3,6 +3,7 @@ package ru.olegcherednik.alice.chess.player;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.Piece;
 
 import java.util.function.Function;
@@ -14,6 +15,10 @@ import java.util.function.Function;
 public interface Player {
 
     Piece getPiece(Piece.Id id);
+
+    Color getColor();
+
+    String nextPly(GameContext context);
 
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     enum Type {
@@ -31,8 +36,9 @@ public interface Player {
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     enum Color {
         BLACK("Black"),
-        WHITE("Whites");
+        WHITE("White");
 
         private final String title;
     }
+
 }

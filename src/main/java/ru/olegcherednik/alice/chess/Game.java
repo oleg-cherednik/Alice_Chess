@@ -2,104 +2,86 @@ package ru.olegcherednik.alice.chess;
 
 import lombok.Builder;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import ru.olegcherednik.alice.chess.exceptions.ChessException;
+import ru.olegcherednik.alice.chess.move.Ply;
+import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
 import ru.olegcherednik.alice.chess.visualization.ascii.AsciiBoardPrintStrategy;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
  * @author Oleg Cherednik
  * @since 18.07.2021
  */
-public final class Game {
+public final class Game implements GameContext {
 
-    private final Context context;
+    private final InitialContext context;
+    private final Scanner scan;
     private final Player playerWhite;
     private final Player playerBlack;
     private final Board board;
-    private final Play play;
-    private final Scanner scan;
+    private final Processor processor;
 
-    public Game(Context context) {
+    public Game(InitialContext context) {
         this.context = context;
+        scan = new Scanner(context.in);
         playerWhite = context.createWhitePlayer();
         playerBlack = context.createBlackPlayer();
         board = new Board(playerBlack, playerWhite);
-        scan = new Scanner(context.in);
-        play = new Play(scan, context.out, playerWhite);
+        processor = new Processor(playerWhite);
     }
 
-    public void start() {
+    public void start() throws InterruptedException {
         context.out.println("LET'S PLAY CHESS!!!");
-        context.out.println("Player White vs Player Black");
+        context.out.println("Player 1 (White) vs Player 2 (Black)");
         context.out.println();
 
-        print();
-
-        int moveNo = 0;
-        List<Move> moves = new ArrayList<>();
-
         while (true) {
-            context.out.println();
-            context.out.format("Move %d (%s) > ", moveNo + 1, play.nextMovePlayer);
-            String str = scan.nextLine();
-            Board.Cell cellFrom = board.getCell(str.substring(0, 2));
-            Board.Cell cellTo = board.getCell(str.substring(2));
-            Move move = new Move(moveNo, play.nextMovePlayer, cellFrom.getId(), cellTo.getId());
-            moves.add(move);
+            try {
+                print();
 
-            cellTo.setPiece(cellFrom.getPiece());
-            cellFrom.clear();
+                Ply ply = processor.nextPly(this);
+                Board.Cell cellFrom = board.getCell(ply.getFromCellId());
+                Board.Cell cellTo = board.getCell(ply.getToCellId());
 
-            play.setNextMovePlayer(playerWhite == play.nextMovePlayer ? playerBlack : playerWhite);
-            moveNo++;
+                cellTo.setPiece(cellFrom.getPiece());
+                cellFrom.clear();
 
-            print();
+                processor.setNextMovePlayer(playerWhite == processor.getNextMovePlayer() ? playerBlack : playerWhite);
+            } catch (ChessException e) {
+                context.err.println(e.getMessage());
+                Thread.sleep(200);
+            }
         }
     }
 
     private void print() {
         context.boardPrintStrategy.print(board, context.out);
+        context.out.println();
     }
 
-    public static final class Play {
 
-        private final Scanner scan;
-        private final PrintStream out;
-        @Setter
-        private Player nextMovePlayer;
-
-        public Play(Scanner scan, PrintStream out, Player nextMovePlayer) {
-            this.scan = scan;
-            this.out = out;
-            this.nextMovePlayer = nextMovePlayer;
-        }
-
+    @Override
+    public PrintStream out() {
+        return context.out;
     }
 
-    @RequiredArgsConstructor
-    public static final class Move {
+    @Override
+    public Scanner scan() {
+        return scan;
+    }
 
-        private final int no;
-        private final Player player;
-        private final String cellFromId;
-        private final String cellToId;
-
-        @Override
-        public String toString() {
-            return cellFromId + cellToId;
-        }
+    @Override
+    public Board.Cell cell(String cellId) {
+        return board.getCell(cellId);
     }
 
     @Builder
-    public static final class Context {
+    public static final class InitialContext {
 
         @NonNull
         @Builder.Default
@@ -116,6 +98,9 @@ public final class Game {
         @NonNull
         @Builder.Default
         private final PrintStream out = System.out;
+        @NonNull
+        @Builder.Default
+        private final PrintStream err = System.err;
 
         public Player createWhitePlayer() {
             return playerWhiteType.create(Player.Color.WHITE);
