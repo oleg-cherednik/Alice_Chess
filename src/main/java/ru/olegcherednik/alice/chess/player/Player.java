@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.piece.Piece;
-import ru.olegcherednik.alice.chess.piece.PieceId;
 
 import java.util.function.Function;
 
@@ -15,7 +14,7 @@ import java.util.function.Function;
  */
 public interface Player {
 
-    Piece getPiece(PieceId id);
+    Piece getPiece(Piece.PieceId id);
 
     Color getColor();
 

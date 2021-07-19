@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.piece.Piece;
-import ru.olegcherednik.alice.chess.piece.PieceId;
 import ru.olegcherednik.alice.chess.player.Player;
 
 import java.util.Optional;
@@ -39,7 +38,7 @@ public final class Board {
     }
 
     private void addPlayerPieces(Player player, int mainRow, int pawnsRow) {
-        for (PieceId id : PieceId.values()) {
+        for (Piece.PieceId id : Piece.PieceId.values()) {
             int row = id.getType() == Piece.Type.PAWN ? pawnsRow : mainRow;
             int col = id.getInitCol();
             Piece piece = player.getPiece(id);
