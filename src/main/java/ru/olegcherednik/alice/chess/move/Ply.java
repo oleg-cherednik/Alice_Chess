@@ -36,7 +36,7 @@ public final class Ply {
 
     @Override
     public String toString() {
-        return fromCellId + '-' + toCellId;
+        return fromCellId + toCellId;
     }
 
 }

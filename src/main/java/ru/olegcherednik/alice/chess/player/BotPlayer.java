@@ -7,7 +7,7 @@ import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
  * @author Oleg Cherednik
  * @since 18.07.2021
  */
-public class BotPlayer extends AbstractPlayer {
+public class BotPlayer extends BasePlayer {
 
     public BotPlayer(Color color) {
         super(color);

@@ -16,9 +16,9 @@ final class CellWithinBoardValidationRule implements ValidationRule {
         String fromCellId = Ply.getFromCellId(strPly);
         String toCellId = Ply.getToCellId(strPly);
 
-        if (context.cell(fromCellId) == Board.Cell.NULL)
+        if (context.getBoard().getCell(fromCellId) == Board.Cell.NULL)
             throw new ChessException(String.format("Cell '%s' is out of board", fromCellId));
-        if (context.cell(toCellId) == Board.Cell.NULL)
+        if (context.getBoard().getCell(toCellId) == Board.Cell.NULL)
             throw new ChessException(String.format("Cell '%s' is out of board", toCellId));
     }
 

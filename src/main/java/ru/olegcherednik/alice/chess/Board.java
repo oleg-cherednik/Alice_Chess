@@ -4,12 +4,16 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.move.Processor;
-import ru.olegcherednik.alice.chess.piece.Piece;
+import ru.olegcherednik.alice.chess.piece.IPiece;
+import ru.olegcherednik.alice.chess.piece.PieceId;
+import ru.olegcherednik.alice.chess.piece.PieceType;
 import ru.olegcherednik.alice.chess.player.Player;
 
 import java.util.Optional;
 
 /**
+ * Class represents a chess board and all related mechanic activities (i.g. move a piece from one cell to another)
+ *
  * @author Oleg Cherednik
  * @since 16.07.2021
  */
@@ -36,11 +40,23 @@ public final class Board {
     }
 
     private void addPlayerPieces(Player player, int mainRow, int pawnsRow) {
-        for (Piece.Id id : Piece.Id.values()) {
-            int row = id.getType() == Piece.Type.PAWN ? pawnsRow : mainRow;
-            int col = id.getCol();
-            cells[row][col].setPiece(player.getPiece(id));
+        for (PieceId id : PieceId.values()) {
+            int row = id.getType() == PieceType.PAWN ? pawnsRow : mainRow;
+            int col = id.getInitCol();
+            IPiece piece = player.getPiece(id);
+            cells[row][col].setPiece(piece);
+            piece.moveTo(Processor.getCellId(col, row));
         }
+    }
+
+    public void movePiece(String fromCellId, String toCellId) {
+        Board.Cell cellFrom = getCell(fromCellId);
+        Board.Cell cellTo = getCell(toCellId);
+        IPiece piece = cellFrom.getPiece();
+
+        cellTo.setPiece(piece);
+        cellFrom.clear();
+        piece.moveTo(cellTo.getId());
     }
 
     public int getHeight() {
@@ -51,7 +67,11 @@ public final class Board {
         return WIDTH;
     }
 
-    public Cell getCell(int row, int col) {
+    public Cell getCell(int col, int row) {
+        if (row < 0 || row >= cells.length)
+            return Cell.NULL;
+        if (col < 0 || col >= cells[row].length)
+            return Cell.NULL;
         return cells[row][col];
     }
 
@@ -75,23 +95,23 @@ public final class Board {
 
         /** Format is D5 or A1 */
         private final String id;
-        private Piece piece;
+        private IPiece piece;
 
         public static Cell createEmpty(String id) {
-            return new Cell(id, Piece.NULL);
+            return new Cell(id, IPiece.NULL);
         }
 
         public boolean isEmpty() {
-            return this != NULL && piece == Piece.NULL;
+            return this != NULL && piece == IPiece.NULL;
         }
 
         public void clear() {
             setPiece(null);
         }
 
-        public void setPiece(Piece piece) {
+        public void setPiece(IPiece piece) {
             if (this != NULL)
-                this.piece = Optional.ofNullable(piece).orElse(Piece.NULL);
+                this.piece = Optional.ofNullable(piece).orElse(IPiece.NULL);
         }
 
         @Override

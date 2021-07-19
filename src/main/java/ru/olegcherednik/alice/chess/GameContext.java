@@ -15,8 +15,12 @@ public interface GameContext {
 
     Scanner scan();
 
-    Board.Cell cell(String cellId);
+    Board getBoard();
 
-    Player.Color currentPlayer();
+    Player.Color getCurrentPlayer();
+
+    default boolean whitePlayerBottom() {
+        return true;
+    }
 
 }

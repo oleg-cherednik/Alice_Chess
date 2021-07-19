@@ -45,14 +45,7 @@ public final class Game implements GameContext {
                 print();
 
                 Ply ply = processor.doNextPly(this);
-                Board.Cell cellFrom = board.getCell(ply.getFromCellId());
-                Board.Cell cellTo = board.getCell(ply.getToCellId());
-
-                cellTo.setPiece(cellFrom.getPiece());
-                cellFrom.clear();
-
-
-
+                board.movePiece(ply.getFromCellId(), ply.getToCellId());
                 processor.switchToPlayer(playerWhite == processor.getCurrentPlayer() ? playerBlack : playerWhite);
             } catch (ChessException e) {
                 context.err.println(e.getMessage());
@@ -78,12 +71,12 @@ public final class Game implements GameContext {
     }
 
     @Override
-    public Board.Cell cell(String cellId) {
-        return board.getCell(cellId);
+    public Board getBoard() {
+        return board;
     }
 
     @Override
-    public Player.Color currentPlayer() {
+    public Player.Color getCurrentPlayer() {
         return processor.getCurrentPlayer().getColor();
     }
 

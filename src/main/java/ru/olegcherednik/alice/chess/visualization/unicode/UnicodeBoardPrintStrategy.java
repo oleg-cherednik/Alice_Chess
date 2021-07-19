@@ -29,7 +29,7 @@ public final class UnicodeBoardPrintStrategy implements BoardPrintStrategy {
             out.format("%d │", board.getHeight() - row);
 
             for (int col = 0; col < board.getWidth(); col++) {
-                Board.Cell cell = board.getCell(row, col);
+                Board.Cell cell = board.getCell(col, row);
                 out.print(' ');
                 UnicodeCellPrintStrategy.INSTANCE.print(cell, out);
                 out.print(" │");
@@ -44,4 +44,5 @@ public final class UnicodeBoardPrintStrategy implements BoardPrintStrategy {
         out.format("  %s\n", BOTTOM_LINE);
         out.format("   %s\n", ROW_LETTERS);
     }
+
 }

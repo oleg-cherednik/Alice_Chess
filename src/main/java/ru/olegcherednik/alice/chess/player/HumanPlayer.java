@@ -6,7 +6,7 @@ import ru.olegcherednik.alice.chess.GameContext;
  * @author Oleg Cherednik
  * @since 18.07.2021
  */
-public class HumanPlayer extends AbstractPlayer {
+public class HumanPlayer extends BasePlayer {
 
     public HumanPlayer(Color color) {
         super(color);
