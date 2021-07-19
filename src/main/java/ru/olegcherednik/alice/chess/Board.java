@@ -100,8 +100,12 @@ public final class Board {
             return new Cell(id, Piece.NULL);
         }
 
+        public boolean isNull() {
+            return this == NULL;
+        }
+
         public boolean isEmpty() {
-            return this != NULL && piece == Piece.NULL;
+            return piece == Piece.NULL;
         }
 
         public void clear() {

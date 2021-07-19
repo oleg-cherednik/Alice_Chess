@@ -42,6 +42,8 @@ final class Knight extends AbstractPiece {
         Player.Color currentPlayer = context.getCurrentPlayer();
         Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
+        if (toCell.isNull())
+            return;
         if (toCell.isEmpty())
             cellIds.add(toCell.getId());
         else if (toCell.getPiece().getColor() != currentPlayer)
