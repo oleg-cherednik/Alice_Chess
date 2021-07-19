@@ -55,6 +55,12 @@ public final class Piece {
                 Set<String> cellIds = new HashSet<>();
 
                 if (player == Player.Color.WHITE) {
+                    String toCellId = Processor.getCellId(col, row - 1);
+                    Board.Cell cell = context.cell(toCellId);
+
+                    if(cell.isEmpty())
+                        cellIds.add(toCellId);
+
                     addWithinBoardCell(cellIds, col, row - 1, context);
                     addWithinBoardCell(cellIds, col, row - 2, context);
                 } else if (player == Player.Color.BLACK) {

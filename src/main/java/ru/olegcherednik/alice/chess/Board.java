@@ -81,7 +81,7 @@ public final class Board {
         }
 
         public boolean isEmpty() {
-            return piece == Piece.NULL;
+            return this != NULL && piece == Piece.NULL;
         }
 
         public void clear() {
@@ -89,7 +89,8 @@ public final class Board {
         }
 
         public void setPiece(Piece piece) {
-            this.piece = Optional.ofNullable(piece).orElse(Piece.NULL);
+            if (this != NULL)
+                this.piece = Optional.ofNullable(piece).orElse(Piece.NULL);
         }
 
         @Override
