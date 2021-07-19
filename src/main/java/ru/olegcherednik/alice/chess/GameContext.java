@@ -1,5 +1,7 @@
 package ru.olegcherednik.alice.chess;
 
+import ru.olegcherednik.alice.chess.player.Player;
+
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -14,5 +16,7 @@ public interface GameContext {
     Scanner scan();
 
     Board.Cell cell(String cellId);
+
+    Player.Color player();
 
 }

@@ -3,7 +3,12 @@ package ru.olegcherednik.alice.chess;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class implements one piece on the chess board.
@@ -24,6 +29,10 @@ public final class Piece {
         return id.type;
     }
 
+    public Set<String> getAvailableMoves(String fromCellId, GameContext context) {
+        return getType().getAvailableMoves(fromCellId, context);
+    }
+
     @Override
     public String toString() {
         return id + "_" + color;
@@ -32,16 +41,48 @@ public final class Piece {
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     public enum Type {
-        ROOK('r', "♖", "♜"),
-        KNIGHT('n', "♘", "♞"),
-        BISHOP('b', "♗", "♝"),
-        QUEEN('q', "♕", "♛"),
-        KING('k', "♔", "♚"),
-        PAWN('p', "♙", "♟");
+        ROOK("Rook", 'r', "♖", "♜"),
+        KNIGHT("Knight", 'n', "♘", "♞"),
+        BISHOP("Bishop", 'b', "♗", "♝"),
+        QUEEN("Queen", 'q', "♕", "♛"),
+        KING("King", 'k', "♔", "♚"),
+        PAWN("Pawn", 'p', "♙", "♟") {
+            @Override
+            public Set<String> getAvailableMoves(String fromCellId, GameContext context) {
+                Player.Color player = context.player();
+                int col = Processor.getCellCol(fromCellId);
+                int row = Processor.getCellRow(fromCellId);
+                Set<String> cellIds = new HashSet<>();
 
+                if (player == Player.Color.WHITE) {
+                    addWithinBoardCell(cellIds, col, row - 1, context);
+                    addWithinBoardCell(cellIds, col, row - 2, context);
+                } else if (player == Player.Color.BLACK) {
+                    addWithinBoardCell(cellIds, col, row + 1, context);
+                    addWithinBoardCell(cellIds, col, row + 2, context);
+                } else
+                    return Collections.emptySet();
+
+                return cellIds;
+            }
+        };
+
+        private final String title;
         private final char ascii;
         private final String unicodeWhite;
         private final String unicodeBlack;
+
+        // Some of these cells could be taken or be out of the border
+        public Set<String> getAvailableMoves(String fromCellId, GameContext context) {
+            return Collections.emptySet();
+        }
+
+        protected static void addWithinBoardCell(Set<String> cellIds, int col, int row, GameContext context) {
+            String toCellId = Processor.getCellId(col, row);
+
+            if (context.cell(toCellId) != Board.Cell.NULL)
+                cellIds.add(toCellId);
+        }
 
     }
 
@@ -72,4 +113,5 @@ public final class Piece {
             return new Piece(this, color);
         }
     }
+
 }

@@ -24,7 +24,7 @@ public final class Board {
 
         for (int row = 0; row < WIDTH; row++)
             for (int col = 0; col < HEIGHT; col++)
-                cells[row][col] = Cell.createEmpty(Processor.getCellId(row, col));
+                cells[row][col] = Cell.createEmpty(Processor.getCellId(col, row));
 
         return cells;
     }
@@ -57,12 +57,20 @@ public final class Board {
     public Cell getCell(String cellId) {
         int row = Processor.getCellRow(cellId);
         int col = Processor.getCellCol(cellId);
+
+        if (row < 0 || row >= cells.length)
+            return Cell.NULL;
+        if (col < 0 || col >= cells[row].length)
+            return Cell.NULL;
+
         return cells[row][col];
     }
 
     @Getter
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Cell {
+
+        public static final Cell NULL = createEmpty("----");
 
         /** Format is D5 or A1 */
         private final String id;
@@ -71,7 +79,6 @@ public final class Board {
         public static Cell createEmpty(String id) {
             return new Cell(id, Piece.NULL);
         }
-
 
         public boolean isEmpty() {
             return piece == Piece.NULL;

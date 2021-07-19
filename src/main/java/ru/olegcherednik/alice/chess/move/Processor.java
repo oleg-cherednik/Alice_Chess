@@ -1,7 +1,6 @@
 package ru.olegcherednik.alice.chess.move;
 
 import lombok.Getter;
-import lombok.Setter;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.move.validations.ValidationProcessor;
 import ru.olegcherednik.alice.chess.player.Player;
@@ -17,26 +16,32 @@ public final class Processor {
 
     private final List<Ply> plies = new ArrayList<>();
     private final ValidationProcessor validationProcessor = new ValidationProcessor();
-    @Setter
     @Getter
-    private Player nextMovePlayer;
+    private Player player;
     @Getter
     private int moveNo;
 
-    public Processor(Player nextMovePlayer) {
-        this.nextMovePlayer = nextMovePlayer;
+    public Processor(Player player) {
+        this.player = player;
     }
 
-    public Ply nextPly(GameContext context) {
-        context.out().format("Move %d (%s) > ", moveNo + 1, nextMovePlayer.getColor().getTitle());
+    public Ply doNextPly(GameContext context) {
+        context.out().format("Move %d (%s) > ", moveNo + 1, player.getColor().getTitle());
 
-        String strPly = normalizeStrPly(nextMovePlayer.nextPly(context));
+        String strPly = normalizeStrPly(player.nextPly(context));
         validationProcessor.validate(strPly, context);
 
-        Ply ply = Ply.createFromStr(strPly, moveNo, nextMovePlayer.getColor());
+        Ply ply = Ply.createFromStr(strPly, moveNo, player.getColor());
         plies.add(ply);
 
         return ply;
+    }
+
+    public void switchToPlayer(Player player) {
+        this.player = player;
+
+        if (player.getColor() == Player.Color.WHITE)
+            moveNo++;
     }
 
     public static String normalizeStrPly(String strPly) {
@@ -51,7 +56,7 @@ public final class Processor {
         return cellId.charAt(0) - 'a';
     }
 
-    public static String getCellId(int row, int col) {
+    public static String getCellId(int col, int row) {
         return (char)('a' + col) + String.valueOf(8 - row);
     }
 

@@ -12,10 +12,10 @@ final class IncorrectInputValidationRule implements ValidationRule {
     @Override
     public void validate(String strPly, GameContext context) {
         boolean valid = strPly.length() == 4;
-        valid &= Character.isLowerCase(strPly.charAt(0)) && Character.isLetter(strPly.charAt(0));
-        valid &= Character.isDigit(strPly.charAt(1));
-        valid &= Character.isLowerCase(strPly.charAt(2)) && Character.isLetter(strPly.charAt(2));
-        valid &= Character.isDigit(strPly.charAt(3));
+        valid = valid && Character.isLowerCase(strPly.charAt(0)) && Character.isLetter(strPly.charAt(0));
+        valid = valid && Character.isDigit(strPly.charAt(1));
+        valid = valid && Character.isLowerCase(strPly.charAt(2)) && Character.isLetter(strPly.charAt(2));
+        valid = valid && Character.isDigit(strPly.charAt(3));
 
         if (!valid)
             throw new ChessException(String.format("'%s' format is not correct (expected i.e. d2d4)", strPly));

@@ -14,12 +14,16 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ValidationFactory {
 
+    // order is important
     public static List<ValidationRule> createValidationRules() {
-        List<ValidationRule> validationRules = new ArrayList<>();
-        validationRules.add(new IncorrectInputValidationRule());
-        validationRules.add(new OutOfBoardValidationRule());
-        validationRules.add(new CellIsEmptyValidationRule());
-        return Collections.unmodifiableList(validationRules);
+        List<ValidationRule> rules = new ArrayList<>();
+        rules.add(new IncorrectInputValidationRule());
+        rules.add(new CellWithinBoardValidationRule());
+        rules.add(new CellEmptyValidationRule());
+        rules.add(new EatOwnPieceValidationRule());
+        rules.add(new PlyOwnPieceValidationRule());
+        rules.add(new IncorrectPieceMoveValidationRule());
+        return Collections.unmodifiableList(rules);
     }
 
 }
