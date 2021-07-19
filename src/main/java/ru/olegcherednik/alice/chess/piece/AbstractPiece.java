@@ -3,6 +3,7 @@ package ru.olegcherednik.alice.chess.piece;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import ru.olegcherednik.alice.chess.Board;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
@@ -36,6 +37,38 @@ abstract class AbstractPiece implements Piece {
 
         col = Processor.getCellCol(toCellId);
         row = Processor.getCellRow(toCellId);
+    }
+
+    /**
+     * <ul>
+     * Piece can move only if:
+     * <li>cell is empty</li>
+     * <li>cell is taken by other player's piece and this is the first such cell</li>
+     * <li>all previous cells are empty</li>
+     * </ul>
+     */
+    protected void addMultiMove(Set<String> cellIds, int incCol, int incRow, GameContext context) {
+        int row = this.row;
+        int col = this.col;
+
+        do {
+            row += incRow;
+            col += incCol;
+            Board.Cell toCell = context.getBoard().getCell(col, row);
+
+            if (toCell.isNull())
+                break;
+            if (toCell.isEmpty())
+                cellIds.add(toCell.getId());
+            else {
+                Player.Color currentPlayer = context.getCurrentPlayer();
+
+                if (toCell.getPiece().getColor() != currentPlayer)
+                    cellIds.add(toCell.getId());
+
+                break;
+            }
+        } while (true);
     }
 
     @Override
