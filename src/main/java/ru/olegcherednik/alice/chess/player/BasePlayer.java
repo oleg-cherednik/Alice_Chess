@@ -1,7 +1,7 @@
 package ru.olegcherednik.alice.chess.player;
 
 import lombok.Getter;
-import ru.olegcherednik.alice.chess.piece.IPiece;
+import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.piece.PieceId;
 
 import java.util.EnumMap;
@@ -15,7 +15,7 @@ abstract class BasePlayer implements Player {
 
     @Getter
     protected final Color color;
-    protected final Map<PieceId, IPiece> pieces;
+    protected final Map<PieceId, Piece> pieces;
 
     protected BasePlayer(Color color) {
         this.color = color;
@@ -23,12 +23,12 @@ abstract class BasePlayer implements Player {
     }
 
     @Override
-    public final IPiece getPiece(PieceId id) {
-        return pieces.getOrDefault(id, IPiece.NULL);
+    public final Piece getPiece(PieceId id) {
+        return pieces.getOrDefault(id, Piece.NULL);
     }
 
-    private static Map<PieceId, IPiece> createPieces(Color color) {
-        Map<PieceId, IPiece> pieces = new EnumMap<>(PieceId.class);
+    private static Map<PieceId, Piece> createPieces(Color color) {
+        Map<PieceId, Piece> pieces = new EnumMap<>(PieceId.class);
 
         for (PieceId id : PieceId.values())
             pieces.put(id, id.create(color));

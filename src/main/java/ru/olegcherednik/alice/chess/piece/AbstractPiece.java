@@ -16,7 +16,7 @@ import java.util.Set;
  */
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-abstract class AbstractPiece implements IPiece {
+abstract class AbstractPiece implements Piece {
 
     protected final PieceId id;
     protected final Player.Color color;

@@ -1,6 +1,6 @@
 package ru.olegcherednik.alice.chess.visualization;
 
-import ru.olegcherednik.alice.chess.piece.IPiece;
+import ru.olegcherednik.alice.chess.piece.Piece;
 
 import java.io.PrintStream;
 
@@ -10,5 +10,5 @@ import java.io.PrintStream;
  */
 public interface PiecePrintStrategy {
 
-    void print(IPiece piece, PrintStream out);
+    void print(Piece piece, PrintStream out);
 }

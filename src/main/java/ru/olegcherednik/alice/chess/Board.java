@@ -4,9 +4,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.move.Processor;
-import ru.olegcherednik.alice.chess.piece.IPiece;
+import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.piece.PieceId;
-import ru.olegcherednik.alice.chess.piece.PieceType;
 import ru.olegcherednik.alice.chess.player.Player;
 
 import java.util.Optional;
@@ -41,9 +40,9 @@ public final class Board {
 
     private void addPlayerPieces(Player player, int mainRow, int pawnsRow) {
         for (PieceId id : PieceId.values()) {
-            int row = id.getType() == PieceType.PAWN ? pawnsRow : mainRow;
+            int row = id.getType() == Piece.Type.PAWN ? pawnsRow : mainRow;
             int col = id.getInitCol();
-            IPiece piece = player.getPiece(id);
+            Piece piece = player.getPiece(id);
             cells[row][col].setPiece(piece);
             piece.moveTo(Processor.getCellId(col, row));
         }
@@ -52,7 +51,7 @@ public final class Board {
     public void movePiece(String fromCellId, String toCellId) {
         Board.Cell cellFrom = getCell(fromCellId);
         Board.Cell cellTo = getCell(toCellId);
-        IPiece piece = cellFrom.getPiece();
+        Piece piece = cellFrom.getPiece();
 
         cellTo.setPiece(piece);
         cellFrom.clear();
@@ -95,23 +94,23 @@ public final class Board {
 
         /** Format is D5 or A1 */
         private final String id;
-        private IPiece piece;
+        private Piece piece;
 
         public static Cell createEmpty(String id) {
-            return new Cell(id, IPiece.NULL);
+            return new Cell(id, Piece.NULL);
         }
 
         public boolean isEmpty() {
-            return this != NULL && piece == IPiece.NULL;
+            return this != NULL && piece == Piece.NULL;
         }
 
         public void clear() {
             setPiece(null);
         }
 
-        public void setPiece(IPiece piece) {
+        public void setPiece(Piece piece) {
             if (this != NULL)
-                this.piece = Optional.ofNullable(piece).orElse(IPiece.NULL);
+                this.piece = Optional.ofNullable(piece).orElse(Piece.NULL);
         }
 
         @Override

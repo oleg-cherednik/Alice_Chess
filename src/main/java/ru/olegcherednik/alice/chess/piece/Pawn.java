@@ -81,6 +81,9 @@ final class Pawn extends AbstractPiece {
         cellIds.add(toCell.getId());
     }
 
+    // TODO add Promotion
+    // TODO add En passant
+
     private static int getRowInc(GameContext context) {
         Player.Color currentPlayer = context.getCurrentPlayer();
 
