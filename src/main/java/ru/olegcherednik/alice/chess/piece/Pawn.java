@@ -35,8 +35,8 @@ final class Pawn extends AbstractPiece {
      * </ul>
      */
     private void addOneRowMove(Set<String> cellIds, GameContext context) {
-        int rowInc = getRowInc(context);
-        Board.Cell toCell = context.getBoard().getCell(col, row + rowInc);
+        int incRow = getIncRow(context);
+        Board.Cell toCell = context.getBoard().getCell(col, row + incRow);
 
         if (toCell.isEmpty())
             cellIds.add(toCell.getId());
@@ -54,12 +54,16 @@ final class Pawn extends AbstractPiece {
         if (totalMoves != 0)
             return;
 
-        int rowInc = getRowInc(context);
-        Board.Cell toCell1 = context.getBoard().getCell(col, row + rowInc);
-        Board.Cell toCell2 = context.getBoard().getCell(col, row + rowInc + rowInc);
+        int incRow = getIncRow(context);
+        Board.Cell toCell1 = context.getBoard().getCell(col, row + incRow);
+        Board.Cell toCell2 = context.getBoard().getCell(col, row + incRow + incRow);
 
-        if (toCell1.isEmpty() && toCell2.isEmpty())
-            cellIds.add(toCell2.getId());
+        if (!toCell1.isEmpty())
+            return;
+        if (!toCell2.isEmpty())
+            return;
+
+        cellIds.add(toCell2.getId());
     }
 
     /**
@@ -68,14 +72,14 @@ final class Pawn extends AbstractPiece {
      * <li>cell is taken by other player's piece</li>
      * </ul>
      */
-    private void addDiagonalMove(Set<String> cellIds, int colInc, GameContext context) {
-        int rowInc = getRowInc(context);
-        Player.Color player = context.getCurrentPlayer();
-        Board.Cell toCell = context.getBoard().getCell(col + colInc, row + rowInc);
+    private void addDiagonalMove(Set<String> cellIds, int incCol, GameContext context) {
+        int incRow = getIncRow(context);
+        Player.Color currentPlayer = context.getCurrentPlayer();
+        Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
         if (toCell.isEmpty())
             return;
-        if (toCell.getPiece().getColor() == player)
+        if (toCell.getPiece().getColor() == currentPlayer)
             return;
 
         cellIds.add(toCell.getId());
@@ -84,7 +88,7 @@ final class Pawn extends AbstractPiece {
     // TODO add Promotion
     // TODO add En passant
 
-    private static int getRowInc(GameContext context) {
+    private static int getIncRow(GameContext context) {
         Player.Color currentPlayer = context.getCurrentPlayer();
 
         if (currentPlayer == Player.Color.WHITE)
