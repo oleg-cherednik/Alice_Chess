@@ -2,6 +2,7 @@ package ru.olegcherednik.alice.chess;
 
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
@@ -9,6 +10,8 @@ import ru.olegcherednik.alice.chess.visualization.ascii.AsciiBoardPrintStrategy;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -40,19 +43,23 @@ public final class Game {
 
         print();
 
-        int moveNo = 1;
+        int moveNo = 0;
+        List<Move> moves = new ArrayList<>();
 
         while (true) {
             context.out.println();
-            context.out.format("Move %d (%s) > ", moveNo++, play.nextMovePlayer);
-            String move = scan.nextLine();
-            Board.Cell cellFrom = board.getCell(move.substring(0, 2));
-            Board.Cell cellTo = board.getCell(move.substring(3));
+            context.out.format("Move %d (%s) > ", moveNo + 1, play.nextMovePlayer);
+            String str = scan.nextLine();
+            Board.Cell cellFrom = board.getCell(str.substring(0, 2));
+            Board.Cell cellTo = board.getCell(str.substring(2));
+            Move move = new Move(moveNo, play.nextMovePlayer, cellFrom.getId(), cellTo.getId());
+            moves.add(move);
 
             cellTo.setPiece(cellFrom.getPiece());
             cellFrom.clear();
 
             play.setNextMovePlayer(playerWhite == play.nextMovePlayer ? playerBlack : playerWhite);
+            moveNo++;
 
             print();
         }
@@ -75,6 +82,20 @@ public final class Game {
             this.nextMovePlayer = nextMovePlayer;
         }
 
+    }
+
+    @RequiredArgsConstructor
+    public static final class Move {
+
+        private final int no;
+        private final Player player;
+        private final String cellFromId;
+        private final String cellToId;
+
+        @Override
+        public String toString() {
+            return cellFromId + cellToId;
+        }
     }
 
     @Builder
