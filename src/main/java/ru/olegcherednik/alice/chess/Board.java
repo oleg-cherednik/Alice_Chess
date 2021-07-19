@@ -7,6 +7,8 @@ import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -83,6 +85,16 @@ public final class Board {
             return Cell.NULL;
 
         return cells[row][col];
+    }
+
+    public List<Cell> getCells() {
+        List<Cell> cells = new ArrayList<>(WIDTH * HEIGHT);
+
+        for (int row = 0; row < HEIGHT; row++)
+            for (int col = 0; col < WIDTH; col++)
+                cells.add(this.cells[row][col]);
+
+        return cells;
     }
 
     @Getter

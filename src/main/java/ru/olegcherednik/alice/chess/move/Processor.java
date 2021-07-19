@@ -38,7 +38,7 @@ public final class Processor {
     }
 
     public void switchToPlayer(Player player) {
-        this.currentPlayer = player;
+        currentPlayer = player;
 
         if (player.getColor() == Player.Color.WHITE)
             moveNo++;

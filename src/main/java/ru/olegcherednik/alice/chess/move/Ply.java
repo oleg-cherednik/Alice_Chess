@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.player.Player;
 
 /**
+ * Ply is the one move of any player, i.e. a half of the move. One move equals to two plies.
+ *
  * @author Oleg Cherednik
  * @since 19.07.2021
  */

@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.player.Player;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.function.BiFunction;
 
@@ -16,32 +15,7 @@ import java.util.function.BiFunction;
  */
 public interface Piece {
 
-    Piece NULL = new Piece() {
-        @Override
-        public PieceId getId() {
-            return null;
-        }
-
-        @Override
-        public Player.Color getColor() {
-            return null;
-        }
-
-        @Override
-        public Set<String> getAvailableMoves(GameContext context) {
-            return Collections.emptySet();
-        }
-
-        @Override
-        public void moveTo(String toCellId) {
-
-        }
-
-        @Override
-        public String toString() {
-            return "<null>";
-        }
-    };
+    Piece NULL = new NullPiece();
 
     PieceId getId();
 
