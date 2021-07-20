@@ -82,19 +82,22 @@ public final class Game implements GameContext {
         return processor.getCurrentPlayer().getColor();
     }
 
+    private static final String MENU_OPTION_UTF8 = "utf8";
+    private static final String MENU_OPTION_HELP = "h";
+
     public static void main(String... args) throws Exception {
         Options options = new Options();
-        options.addOption("utf8", "unicode", false, "Use 'utf8' symbols");
-        options.addOption("v", "version", false, "Print this help");
+        options.addOption(MENU_OPTION_UTF8, "unicode", false, "Use 'utf8' symbols");
+        options.addOption(MENU_OPTION_HELP, "help", false, "Print this help");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
-        if (cmd.hasOption("v"))
+        if (cmd.hasOption(MENU_OPTION_HELP))
             printHelp(options);
         else {
             InitialContext.InitialContextBuilder builder = InitialContext.builder();
-            builder.boardPrintStrategy(cmd.hasOption("utf8") ? UnicodeBoardPrintStrategy.INSTANCE : AsciiBoardPrintStrategy.INSTANCE);
+            builder.boardPrintStrategy(cmd.hasOption(MENU_OPTION_UTF8) ? UnicodeBoardPrintStrategy.INSTANCE : AsciiBoardPrintStrategy.INSTANCE);
             builder.playerWhiteType(Player.Type.HUMAN);
             builder.playerBlackType(Player.Type.HUMAN);
 

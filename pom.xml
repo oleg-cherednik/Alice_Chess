@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.oleg-cherednik.alice</groupId>
-    <artifactId>chess</artifactId>
+    <artifactId>alice-chess</artifactId>
     <version>1.0</version>
 
     <name>alice-chess</name>
@@ -38,13 +38,12 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <finalName>${build.finalName}-all</finalName>
+                    <finalName>${build.finalName}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
@@ -67,6 +66,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
+                        <configuration>
+                            <finalName>unwanted</finalName>
+                            <classifier>unwanted</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -82,6 +94,5 @@
             <artifactId>commons-cli</artifactId>
             <version>${apache.cli.version}</version>
         </dependency>
-
     </dependencies>
 </project>
