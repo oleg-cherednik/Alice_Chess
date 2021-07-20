@@ -5,7 +5,6 @@ import ru.olegcherednik.alice.chess.exceptions.ChessException;
 import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
 import ru.olegcherednik.alice.chess.move.Ply;
 import ru.olegcherednik.alice.chess.move.Processor;
-import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
 import ru.olegcherednik.alice.chess.visualization.unicode.UnicodeBoardPrintStrategy;
@@ -52,7 +51,7 @@ public final class Game implements GameContext {
 
                 Ply ply = processor.doNextPly(this);
                 board.movePiece(ply.getFromCellId(), ply.getToCellId());
-                updateCurrentPlayerCellProtection();
+                processor.updateCurrentPlayerCellProtection(this);
                 processor.switchToPlayer(playerWhite == processor.getCurrentPlayer() ? playerBlack : playerWhite);
             } catch (NotImplementedException e) {
                 err.println(e.getMessage());
@@ -62,17 +61,6 @@ public final class Game implements GameContext {
                 Thread.sleep(200);
             }
         }
-    }
-
-    private void updateCurrentPlayerCellProtection() {
-        for (Board.Cell cell : board.getAllCells())
-            cell.clearProtection();
-
-        Player currentPlayer = processor.getCurrentPlayer();
-
-        for (Piece piece : currentPlayer.getPieces())
-            for (String cellId : piece.getNextEatCellIds(this))
-                board.getCell(cellId).setProtectedBy(currentPlayer.getColor());
     }
 
     private void print() {

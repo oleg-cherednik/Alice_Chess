@@ -4,6 +4,7 @@ import lombok.Getter;
 import ru.olegcherednik.alice.chess.Board;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.move.validations.ValidationProcessor;
+import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 
 import java.util.ArrayList;
@@ -36,6 +37,17 @@ public final class Processor {
         plies.add(ply);
 
         return ply;
+    }
+
+    public void updateCurrentPlayerCellProtection(GameContext context) {
+        Board board = context.getBoard();
+
+        for (Board.Cell cell : board.getAllCells())
+            cell.clearProtection();
+
+        for (Piece piece : currentPlayer.getPieces())
+            for (String cellId : piece.getNextEatCellIds(context))
+                board.getCell(cellId).setProtectedBy(currentPlayer.getColor());
     }
 
     public void switchToPlayer(Player player) {

@@ -2,7 +2,6 @@ package ru.olegcherednik.alice.chess;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 
