@@ -26,7 +26,7 @@ public final class Processor {
     }
 
     public Ply doNextPly(GameContext context) {
-        context.out().format("Move %d (%s) > ", moveNo + 1, currentPlayer.getColor().getTitle());
+        context.getOut().format("Move %d (%s) > ", moveNo + 1, currentPlayer.getColor().getTitle());
 
         String strPly = normalizeStrPly(currentPlayer.nextPly(context));
         validationProcessor.validate(strPly, context);

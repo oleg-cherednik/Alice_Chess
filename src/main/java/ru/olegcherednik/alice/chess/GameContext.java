@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 public interface GameContext {
 
-    PrintStream out();
+    PrintStream getOut();
 
     Scanner scan();
 

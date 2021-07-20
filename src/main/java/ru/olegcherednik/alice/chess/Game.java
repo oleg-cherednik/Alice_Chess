@@ -1,10 +1,13 @@
 package ru.olegcherednik.alice.chess;
 
+import lombok.Getter;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
+import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
 import ru.olegcherednik.alice.chess.move.Ply;
 import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
+import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -15,7 +18,10 @@ import java.util.Scanner;
  */
 public final class Game implements GameContext {
 
-    private final InitialContext context;
+    @Getter
+    private final PrintStream out;
+    private final PrintStream err;
+    private final BoardPrintStrategy boardPrintStrategy;
     private final Scanner scan;
     private final Player playerWhite;
     private final Player playerBlack;
@@ -23,7 +29,9 @@ public final class Game implements GameContext {
     private final Processor processor;
 
     public Game(InitialContext context) {
-        this.context = context;
+        out = context.getOut();
+        err = context.getErr();
+        boardPrintStrategy = context.getBoardPrintStrategy();
         scan = new Scanner(context.getIn());
         playerWhite = context.createWhitePlayer();
         playerBlack = context.createBlackPlayer();
@@ -32,9 +40,9 @@ public final class Game implements GameContext {
     }
 
     public void start() throws InterruptedException {
-        context.getOut().println("LET'S PLAY CHESS!!!");
-        context.getOut().println("Player 1 (White) vs Player 2 (Black)");
-        context.getOut().println();
+        out.println("LET'S PLAY CHESS!!!");
+        out.println("Player 1 (White) vs Player 2 (Black)");
+        out.println();
 
         while (true) {
             try {
@@ -44,8 +52,11 @@ public final class Game implements GameContext {
                 board.movePiece(ply.getFromCellId(), ply.getToCellId());
                 updateCurrentPlayerCellProtection();
                 processor.switchToPlayer(playerWhite == processor.getCurrentPlayer() ? playerBlack : playerWhite);
+            } catch (NotImplementedException e) {
+                err.println(e.getMessage());
+                break;
             } catch (ChessException e) {
-                context.getErr().println(e.getMessage());
+                err.println(e.getMessage());
                 Thread.sleep(200);
             }
         }
@@ -57,21 +68,14 @@ public final class Game implements GameContext {
 
         Player currentPlayer = processor.getCurrentPlayer();
 
-        for (Piece piece : currentPlayer.getPieces()) {
-            for (String cellId : piece.getNextEatCellIds(this)) {
+        for (Piece piece : currentPlayer.getPieces())
+            for (String cellId : piece.getNextEatCellIds(this))
                 board.getCell(cellId).setProtectedBy(currentPlayer.getColor());
-            }
-        }
     }
 
     private void print() {
-        context.getBoardPrintStrategy().print(board, context.getOut());
-        context.getOut().println();
-    }
-
-    @Override
-    public PrintStream out() {
-        return context.getOut();
+        boardPrintStrategy.print(board, out);
+        out.println();
     }
 
     @Override
