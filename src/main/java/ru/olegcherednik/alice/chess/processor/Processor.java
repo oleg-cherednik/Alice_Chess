@@ -67,19 +67,15 @@ public final class Processor {
         context.getOut().format("Move %d (%s) > ", moveNo + 1, currentPlayer.getColor().getTitle());
 
         String strPly = Board.Cell.normalizeStrPly(currentPlayer.nextPly(context));
-
         Board.Cell fromCell = context.getBoard().getCell(Ply.getFromCellId(strPly));
-        Piece.Type pieceType = fromCell.getPiece().getType();
-
-        // TODO real rule is that next move should avoid check king case (right now only king itself can move)
-        if (context.isCheckKing() && pieceType != Piece.Type.KING)
-            throw new ChessException(String.format("Under the Check only '%s' can move", Piece.Type.KING.getTitle()));
-
-        Ply ply = Ply.createFromStr(strPly, pieceType, moveNo, currentPlayer.getColor());
+        Ply ply = Ply.createFromStr(strPly, moveNo, currentPlayer.getColor());
         validationProcessor.validate(strPly, context);
 
-        plies.add(ply);
+        // TODO real rule is that next move should avoid check king case (right now only king itself can move)
+        if (!fromCell.isNull() && context.isCheckKing() && fromCell.getPiece().getType() != Piece.Type.KING)
+            throw new ChessException(String.format("Under the Check only '%s' can move", Piece.Type.KING.getTitle()));
 
+        plies.add(ply);
         return ply;
     }
 
