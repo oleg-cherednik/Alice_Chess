@@ -1,11 +1,11 @@
-package ru.olegcherednik.alice.chess.move;
+package ru.olegcherednik.alice.chess.processor;
 
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.Board;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
 import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
-import ru.olegcherednik.alice.chess.move.validations.ValidationProcessor;
+import ru.olegcherednik.alice.chess.processor.validations.ValidationProcessor;
 import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 

@@ -1,15 +1,20 @@
 package ru.olegcherednik.alice.chess;
 
 import lombok.Getter;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
 import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
-import ru.olegcherednik.alice.chess.move.Processor;
+import ru.olegcherednik.alice.chess.processor.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
+import ru.olegcherednik.alice.chess.visualization.ascii.AsciiBoardPrintStrategy;
 import ru.olegcherednik.alice.chess.visualization.unicode.UnicodeBoardPrintStrategy;
 
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 /**
@@ -46,10 +51,10 @@ public final class Game implements GameContext {
             try {
                 print();
                 processor.doNextPly(this);
-            } catch (NotImplementedException e) {
+            } catch(NotImplementedException e) {
                 err.println(e.getMessage());
                 break;
-            } catch (ChessException e) {
+            } catch(ChessException e) {
                 err.println(e.getMessage());
             } finally {
                 Thread.sleep(200);
@@ -81,14 +86,29 @@ public final class Game implements GameContext {
 
     // ========== Main ==========
 
-    public static void main(String... args) throws UnsupportedEncodingException, InterruptedException {
-        InitialContext context = InitialContext.builder()
-//                                           .boardPrintStrategy(AsciiBoardPrintStrategy.INSTANCE)
-                                               .boardPrintStrategy(UnicodeBoardPrintStrategy.INSTANCE)
-                                               .playerWhiteType(Player.Type.HUMAN)
-                                               .playerBlackType(Player.Type.HUMAN)
-                                               .build();
-        new Game(context).start();
+    public static void main(String... args) throws Exception {
+        Options options = new Options();
+        options.addOption("utf8", "unicode", false, "Use 'utf8' symbols");
+        options.addOption("v", "version", false, "Print this help");
+
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, args);
+
+        if (cmd.hasOption("v"))
+            printHelp(options);
+        else {
+            InitialContext.InitialContextBuilder builder = InitialContext.builder();
+            builder.boardPrintStrategy(cmd.hasOption("utf8") ? UnicodeBoardPrintStrategy.INSTANCE : AsciiBoardPrintStrategy.INSTANCE);
+            builder.playerWhiteType(Player.Type.HUMAN);
+            builder.playerBlackType(Player.Type.HUMAN);
+
+            new Game(builder.build()).start();
+        }
+    }
+
+    private static void printHelp(Options options) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("alice-chess.jar", options);
     }
 
 }

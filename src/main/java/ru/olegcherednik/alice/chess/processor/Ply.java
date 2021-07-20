@@ -1,4 +1,4 @@
-package ru.olegcherednik.alice.chess.move;
+package ru.olegcherednik.alice.chess.processor;
 
 import lombok.AccessLevel;
 import lombok.Getter;

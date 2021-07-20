@@ -1,4 +1,4 @@
-package ru.olegcherednik.alice.chess.move.validations;
+package ru.olegcherednik.alice.chess.processor.validations;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

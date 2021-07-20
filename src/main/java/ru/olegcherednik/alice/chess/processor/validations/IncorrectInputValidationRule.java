@@ -1,4 +1,4 @@
-package ru.olegcherednik.alice.chess.move.validations;
+package ru.olegcherednik.alice.chess.processor.validations;
 
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
