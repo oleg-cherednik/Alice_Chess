@@ -25,4 +25,6 @@ public interface GameContext {
         return true;
     }
 
+    boolean isCheckKing();
+
 }

@@ -11,7 +11,6 @@ import ru.olegcherednik.alice.chess.processor.validations.ValidationProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Chess processor is responsible for game logic independently from game mechanic like move pieces on the board.
@@ -29,6 +28,13 @@ public final class Processor {
     private Player currentPlayer;
     @Getter
     private int moveNo;
+    /** Check for a king is a case when king's cell is under pressure and king has available moves */
+    @Getter
+    private boolean checkKing;
+    /** Mate for a king is a case when king's cell is under pressure and king has not available moves */
+    private boolean mateKing;
+    // TODO implement stalemate
+//    private boolean stalemateKing;
 
     public Processor(Player playerWhite, Player playerBlack, Player currentPlayer) {
         this.playerWhite = playerWhite;
@@ -46,23 +52,32 @@ public final class Processor {
         updateCurrentPlayerPieces(ply, context);
         movePiece(ply, context);
         updateCurrentPlayerCellProtection(context);
+        checkSpecialCases(context);
+        printInfoMessage(context);
 
-        if (isGameFinished(context))
-            return true;
+        boolean gameOver = isGameOver();
 
-        checkEndgame();
-        moveToNextPlayer();
+        if (!gameOver)
+            moveToNextPlayer();
 
-        return false;
+        return gameOver;
     }
 
     private Ply getNextPly(GameContext context) {
         context.getOut().format("Move %d (%s) > ", moveNo + 1, currentPlayer.getColor().getTitle());
 
         String strPly = Board.Cell.normalizeStrPly(currentPlayer.nextPly(context));
+
+        Board.Cell fromCell = context.getBoard().getCell(Ply.getFromCellId(strPly));
+        Piece.Type pieceType = fromCell.getPiece().getType();
+
+        // TODO real rule is that next move should avoid check king case (right now only king itself can move)
+        if (context.isCheckKing() && pieceType != Piece.Type.KING)
+            throw new ChessException(String.format("Under the Check only '%s' can move", Piece.Type.KING.getTitle()));
+
+        Ply ply = Ply.createFromStr(strPly, pieceType, moveNo, currentPlayer.getColor());
         validationProcessor.validate(strPly, context);
 
-        Ply ply = Ply.createFromStr(strPly, moveNo, currentPlayer.getColor());
         plies.add(ply);
 
         return ply;
@@ -100,36 +115,29 @@ public final class Processor {
                 board.getCell(cellId).setUnderPressureBy(currentPlayer.getColor());
     }
 
-    private boolean isGameFinished(GameContext context) {
-        if (checkMatePosition(context))
-            return true;
+    // TODO right now when check only king can move; do add new check that next move avoids check to the king
+    private void checkSpecialCases(GameContext context) {
+        checkKing = false;
+        mateKing = false;
 
-        return false;
-    }
-
-    /** Mate for a king is possible when king's cell is under the pressure of the opponent player and king does not have available moves */
-    private boolean checkMatePosition(GameContext context) {
         Player opponentPlayer = getOpponentPlayer();
         Piece king = opponentPlayer.getPiece(Piece.Id.KING_E);
 
         // not a mate when king's cell is not under the opponent player pressure
         if (!king.isUnderPressure(context))
-            return false;
+            return;
 
-        Set<String> cellIds = king.getNextMoveCellIds(context);
-
-        if (cellIds.isEmpty()) {
-            context.getOut().format("Mate to '%s' king\n", opponentPlayer);
-            return true;
-        }
-
-        return false;
+        checkKing = true;
+        mateKing = king.getNextMoveCellIds(context).isEmpty();
     }
 
-    private void checkEndgame() {
-        // TODO king cannot move
-        // TODO check check
-        // TODO check mate
+    private void printInfoMessage(GameContext context) {
+        if (!checkKing)
+            return;
+        if (mateKing)
+            context.getOut().format("Check and Mate to '%s' king\n", context.getOpponentPlayer());
+        else
+            context.getOut().format("Check to '%s' king\n", context.getOpponentPlayer());
     }
 
     private void moveToNextPlayer() {
@@ -140,6 +148,10 @@ public final class Processor {
             moveNo++;
     }
 
+    private boolean isGameOver() {
+        return mateKing;
+    }
+
     public Player getOpponentPlayer() {
         if (currentPlayer == playerWhite)
             return playerBlack;
@@ -147,4 +159,5 @@ public final class Processor {
             return playerWhite;
         throw new NotImplementedException(String.format("Unknown player '%s'", currentPlayer));
     }
+
 }

@@ -3,6 +3,7 @@ package ru.olegcherednik.alice.chess.processor;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 
 /**
@@ -18,14 +19,15 @@ import ru.olegcherednik.alice.chess.player.Player;
 public final class Ply {
 
     private final int moveNo;
+    private final Piece.Type pieceType;
     private final Player.Color player;
     private final String fromCellId;
     private final String toCellId;
 
-    public static Ply createFromStr(String strPly, int moveNo, Player.Color player) {
+    public static Ply createFromStr(String strPly, Piece.Type pieceType, int moveNo, Player.Color player) {
         String fromCellId = getFromCellId(strPly);
         String toCellId = getToCellId(strPly);
-        return new Ply(moveNo, player, fromCellId, toCellId);
+        return new Ply(moveNo, pieceType, player, fromCellId, toCellId);
     }
 
     public static String getFromCellId(String strPly) {

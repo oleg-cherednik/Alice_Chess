@@ -21,6 +21,7 @@ public final class ValidationFactory {
                 new EatOwnPieceValidationRule(),
                 new PlyOwnPieceValidationRule(),
                 new IncorrectPieceMoveValidationRule());
+        // TODO add rule if check to a king, then next move should avoid it
     }
 
 }

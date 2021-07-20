@@ -2,8 +2,8 @@ package ru.olegcherednik.alice.chess.processor.validations;
 
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
-import ru.olegcherednik.alice.chess.processor.Ply;
 import ru.olegcherednik.alice.chess.piece.Piece;
+import ru.olegcherednik.alice.chess.processor.Ply;
 
 import java.util.Set;
 

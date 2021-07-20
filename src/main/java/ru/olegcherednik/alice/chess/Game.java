@@ -45,6 +45,7 @@ public final class Game implements GameContext {
     public void start() throws InterruptedException {
         out.println("LET'S PLAY CHESS!!!");
         out.println("Player 1 (White) vs Player 2 (Black)");
+        out.println("(move d2d4 -> move piece from cell 'd2' to 'd4')");
         out.println();
 
         while (true) {
@@ -90,6 +91,11 @@ public final class Game implements GameContext {
     @Override
     public Player getOpponentPlayer() {
         return processor.getOpponentPlayer();
+    }
+
+    @Override
+    public boolean isCheckKing() {
+        return processor.isCheckKing();
     }
 
     private static final String MENU_OPTION_UTF8 = "utf8";
