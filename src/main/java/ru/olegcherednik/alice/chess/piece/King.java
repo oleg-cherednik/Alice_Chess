@@ -19,15 +19,24 @@ final class King extends AbstractPiece {
 
     @Override
     public Set<String> getNextMoveCellIds(GameContext context) {
+        return addMove(true, context);
+    }
+
+    @Override
+    public Set<String> getNextEatCellIds(GameContext context) {
+        return addMove(false, context);
+    }
+
+    private Set<String> addMove(boolean checkProtection, GameContext context) {
         Set<String> cellIds = new HashSet<>();
-        addMove(cellIds, 0, -1, context);
-        addMove(cellIds, 0, 1, context);
-        addMove(cellIds, -1, 0, context);
-        addMove(cellIds, 1, 0, context);
-        addMove(cellIds, -1, -1, context);
-        addMove(cellIds, -1, 1, context);
-        addMove(cellIds, 1, -1, context);
-        addMove(cellIds, 1, 1, context);
+        addMove(cellIds, 0, -1, checkProtection, context);
+        addMove(cellIds, 0, 1, checkProtection, context);
+        addMove(cellIds, -1, 0, checkProtection, context);
+        addMove(cellIds, 1, 0, checkProtection, context);
+        addMove(cellIds, -1, -1, checkProtection, context);
+        addMove(cellIds, -1, 1, checkProtection, context);
+        addMove(cellIds, 1, -1, checkProtection, context);
+        addMove(cellIds, 1, 1, checkProtection, context);
         return cellIds;
     }
 
@@ -39,32 +48,17 @@ final class King extends AbstractPiece {
      * <li>cell is taken by other player's piece</li>
      * </ul>
      */
-    private void addMove(Set<String> cellIds, int incCol, int incRow, GameContext context) {
+    private void addMove(Set<String> cellIds, int incCol, int incRow, boolean checkProtection, GameContext context) {
         Board board = context.getBoard();
         Board.Cell toCell = board.getCell(col + incCol, row + incRow);
+        Player.Color currentPlayer = context.getCurrentPlayer();
 
         if (toCell.isNull())
             return;
-        if (isCellEnemyProtected(context))
+        if (checkProtection && !toCell.isNeutralOrProtectedBy(currentPlayer))
             return;
-        if (toCell.isEmpty())
+        if (toCell.isEmpty() || toCell.getPiece().getColor() != currentPlayer)
             cellIds.add(toCell.getId());
-    }
-
-    private static boolean isCellEnemyProtected(GameContext context) {
-        Player.Color currentPlayer = context.getCurrentPlayer();
-        Board board = context.getBoard();
-
-        for (Board.Cell cell : board.getAllCells()) {
-            if (cell.isEmpty())
-                continue;
-            if (cell.getPiece().getColor() == currentPlayer)
-                continue;
-            if (cell.isProtectedBy(currentPlayer.getOpponent()))
-                return true;
-        }
-
-        return false;
     }
 
 }

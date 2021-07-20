@@ -52,12 +52,14 @@ public final class Game implements GameContext {
     }
 
     private void updateCurrentPlayerCellProtection() {
+        for (Board.Cell cell : board.getAllCells())
+            cell.clearProtection();
+
         Player currentPlayer = processor.getCurrentPlayer();
 
         for (Piece piece : currentPlayer.getPieces()) {
             for (String cellId : piece.getNextEatCellIds(this)) {
-                int a = 0;
-                a++;
+                board.getCell(cellId).setProtectedBy(currentPlayer.getColor());
             }
         }
     }

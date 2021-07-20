@@ -108,7 +108,7 @@ public final class Board {
         private final String id;
         private Piece piece;
         @Setter
-        private Player.Color underProtection;
+        private Player.Color protectedBy;
 
         public static Cell createEmpty(String id) {
             return new Cell(id, Piece.NULL);
@@ -127,8 +127,12 @@ public final class Board {
             return piece == Piece.NULL;
         }
 
-        public boolean isProtectedBy(Player.Color player) {
-            return underProtection == player;
+        public void clearProtection() {
+            protectedBy = null;
+        }
+
+        public boolean isNeutralOrProtectedBy(Player.Color player) {
+            return protectedBy == null || protectedBy == player;
         }
 
         public void clear() {

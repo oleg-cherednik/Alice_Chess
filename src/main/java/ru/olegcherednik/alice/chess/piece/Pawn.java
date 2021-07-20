@@ -23,15 +23,16 @@ final class Pawn extends AbstractPiece {
         Set<String> cellIds = new HashSet<>();
         addOneRowMove(cellIds, context);
         addTwoRowsMove(cellIds, context);
-        cellIds.addAll(getNextEatCellIds(context));
+        addDiagonalMove(cellIds, -1, context);
+        addDiagonalMove(cellIds, 1, context);
         return cellIds;
     }
 
     @Override
     public Set<String> getNextEatCellIds(GameContext context) {
         Set<String> cellIds = new HashSet<>();
-        addDiagonalMove(cellIds, -1, context);
-        addDiagonalMove(cellIds, 1, context);
+        addEatMove(cellIds, -1, context);
+        addEatMove(cellIds, 1, context);
         return cellIds;
     }
 
@@ -84,7 +85,7 @@ final class Pawn extends AbstractPiece {
     private void addDiagonalMove(Set<String> cellIds, int incCol, GameContext context) {
         int incRow = getIncRow(context);
         Player.Color currentPlayer = context.getCurrentPlayer();
-        Board.Cell toCell = context.getBoard().getCell(row + incRow, col + incCol);
+        Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
         if (toCell.isNull() || toCell.isEmpty())
             return;
@@ -96,6 +97,17 @@ final class Pawn extends AbstractPiece {
 
     // TODO add Promotion
     // TODO add En passant
+
+    private void addEatMove(Set<String> cellIds, int incCol, GameContext context) {
+        int incRow = getIncRow(context);
+        Player.Color currentPlayer = context.getCurrentPlayer();
+        Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
+
+        if (toCell.isNull())
+            return;
+        if (toCell.isEmpty() || toCell.getPiece().getColor() != currentPlayer)
+            cellIds.add(toCell.getId());
+    }
 
     private static int getIncRow(GameContext context) {
         Player.Color currentPlayer = context.getCurrentPlayer();

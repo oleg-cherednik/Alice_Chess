@@ -43,9 +43,6 @@ public interface Player {
 
         private final String title;
 
-        public final Color getOpponent() {
-            return this == BLACK ? WHITE : BLACK;
-        }
     }
 
 }
