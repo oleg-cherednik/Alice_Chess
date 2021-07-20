@@ -40,6 +40,7 @@ public final class Processor {
         updateCurrentPlayerPieces(ply, context);
         movePiece(ply, context);
         updateCurrentPlayerCellProtection(context);
+        checkEndgame();
         moveToNextPlayer();
     }
 
@@ -85,6 +86,12 @@ public final class Processor {
         for (Piece piece : currentPlayer.getPieces())
             for (String cellId : piece.getNextEatCellIds(context))
                 board.getCell(cellId).setProtectedBy(currentPlayer.getColor());
+    }
+
+    private void checkEndgame() {
+        // TODO king cannot move
+        // TODO check check
+        // TODO check mate
     }
 
     private void moveToNextPlayer() {
