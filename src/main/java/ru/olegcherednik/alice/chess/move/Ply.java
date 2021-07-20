@@ -1,5 +1,6 @@
 package ru.olegcherednik.alice.chess.move;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.player.Player;
@@ -11,7 +12,7 @@ import ru.olegcherednik.alice.chess.player.Player;
  * @since 19.07.2021
  */
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Ply {
 
     private final int moveNo;
@@ -20,9 +21,6 @@ public final class Ply {
     private final String toCellId;
 
     public static Ply createFromStr(String strPly, int moveNo, Player.Color player) {
-
-        // TODO validation
-
         String fromCellId = getFromCellId(strPly);
         String toCellId = getToCellId(strPly);
         return new Ply(moveNo, player, fromCellId, toCellId);

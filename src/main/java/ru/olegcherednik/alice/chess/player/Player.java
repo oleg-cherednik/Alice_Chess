@@ -19,6 +19,8 @@ public interface Player {
 
     Collection<Piece> getPieces();
 
+    boolean removePiece(Piece.PieceId pieceId);
+
     Color getColor();
 
     String nextPly(GameContext context);

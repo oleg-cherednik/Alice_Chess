@@ -3,6 +3,8 @@ package ru.olegcherednik.alice.chess.move;
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.Board;
 import ru.olegcherednik.alice.chess.GameContext;
+import ru.olegcherednik.alice.chess.exceptions.ChessException;
+import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
 import ru.olegcherednik.alice.chess.move.validations.ValidationProcessor;
 import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
@@ -18,16 +20,28 @@ public final class Processor {
 
     private final List<Ply> plies = new ArrayList<>();
     private final ValidationProcessor validationProcessor = new ValidationProcessor();
+    private final Player playerWhite;
+    private final Player playerBlack;
     @Getter
     private Player currentPlayer;
     @Getter
     private int moveNo;
 
-    public Processor(Player currentPlayer) {
+    public Processor(Player playerWhite, Player playerBlack, Player currentPlayer) {
+        this.playerWhite = playerWhite;
+        this.playerBlack = playerBlack;
         this.currentPlayer = currentPlayer;
     }
 
-    public Ply doNextPly(GameContext context) {
+    public void proceed(GameContext context) {
+        Ply ply = doNextPly(context);
+        updateCurrentPlayerPieces(ply, context);
+        movePiece(ply, context);
+        updateCurrentPlayerCellProtection(context);
+        moveToNextPlayer();
+    }
+
+    private Ply doNextPly(GameContext context) {
         context.getOut().format("Move %d (%s) > ", moveNo + 1, currentPlayer.getColor().getTitle());
 
         String strPly = Board.Cell.normalizeStrPly(currentPlayer.nextPly(context));
@@ -39,7 +53,28 @@ public final class Processor {
         return ply;
     }
 
-    public void updateCurrentPlayerCellProtection(GameContext context) {
+    private void updateCurrentPlayerPieces(Ply ply, GameContext context) {
+        Board board = context.getBoard();
+        String toCellId = ply.getToCellId();
+        Board.Cell toCell = board.getCell(toCellId);
+
+        if (toCell.isNull() || toCell.isEmpty())
+            return;
+
+        Piece.PieceId pieceId = toCell.getPiece().getId();
+
+        if (!currentPlayer.removePiece(pieceId))
+            throw new ChessException(String.format("Player '%s' does not have piece '%s' to remove",
+                    currentPlayer, pieceId));
+    }
+
+    private static void movePiece(Ply ply, GameContext context) {
+        String fromCellId = ply.getFromCellId();
+        String toCellId = ply.getToCellId();
+        context.getBoard().movePiece(fromCellId, toCellId);
+    }
+
+    private void updateCurrentPlayerCellProtection(GameContext context) {
         Board board = context.getBoard();
 
         for (Board.Cell cell : board.getAllCells())
@@ -50,10 +85,15 @@ public final class Processor {
                 board.getCell(cellId).setProtectedBy(currentPlayer.getColor());
     }
 
-    public void switchToPlayer(Player player) {
-        currentPlayer = player;
+    private void moveToNextPlayer() {
+        if (currentPlayer == playerWhite)
+            currentPlayer = playerBlack;
+        else if (currentPlayer == playerBlack)
+            currentPlayer = playerWhite;
+        else
+            throw new NotImplementedException(String.format("Unknown player '%s'", currentPlayer));
 
-        if (player.getColor() == Player.Color.WHITE)
+        if (currentPlayer.getColor() == Player.Color.WHITE)
             moveNo++;
     }
 

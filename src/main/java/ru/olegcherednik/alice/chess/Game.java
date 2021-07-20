@@ -3,7 +3,6 @@ package ru.olegcherednik.alice.chess;
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
 import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
-import ru.olegcherednik.alice.chess.move.Ply;
 import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
@@ -24,8 +23,6 @@ public final class Game implements GameContext {
     private final PrintStream err;
     private final BoardPrintStrategy boardPrintStrategy;
     private final Scanner scan;
-    private final Player playerWhite;
-    private final Player playerBlack;
     private final Board board;
     private final Processor processor;
 
@@ -34,10 +31,10 @@ public final class Game implements GameContext {
         err = context.getErr();
         boardPrintStrategy = context.getBoardPrintStrategy();
         scan = new Scanner(context.getIn());
-        playerWhite = context.createWhitePlayer();
-        playerBlack = context.createBlackPlayer();
+        Player playerWhite = context.createWhitePlayer();
+        Player playerBlack = context.createBlackPlayer();
         board = new Board(playerBlack, playerWhite);
-        processor = new Processor(playerWhite);
+        processor = new Processor(playerWhite, playerBlack, playerWhite);
     }
 
     public void start() throws InterruptedException {
@@ -48,16 +45,13 @@ public final class Game implements GameContext {
         while (true) {
             try {
                 print();
-
-                Ply ply = processor.doNextPly(this);
-                board.movePiece(ply.getFromCellId(), ply.getToCellId());
-                processor.updateCurrentPlayerCellProtection(this);
-                processor.switchToPlayer(playerWhite == processor.getCurrentPlayer() ? playerBlack : playerWhite);
+                processor.proceed(this);
             } catch (NotImplementedException e) {
                 err.println(e.getMessage());
                 break;
             } catch (ChessException e) {
                 err.println(e.getMessage());
+            } finally {
                 Thread.sleep(200);
             }
         }

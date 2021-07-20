@@ -12,25 +12,35 @@ import java.util.Map;
  * @author Oleg Cherednik
  * @since 18.07.2021
  */
-abstract class BasePlayer implements Player {
+abstract class AbstractPlayer implements Player {
 
     @Getter
     protected final Color color;
     protected final Map<Piece.PieceId, Piece> pieces;
 
-    protected BasePlayer(Color color) {
+    protected AbstractPlayer(Color color) {
         this.color = color;
         pieces = createPieces(color);
     }
 
     @Override
-    public final Piece getPiece(Piece.PieceId id) {
+    public Piece getPiece(Piece.PieceId id) {
         return pieces.getOrDefault(id, Piece.NULL);
     }
 
     @Override
-    public final Collection<Piece> getPieces() {
+    public Collection<Piece> getPieces() {
         return pieces.isEmpty() ? Collections.emptyList() : Collections.unmodifiableCollection(pieces.values());
+    }
+
+    @Override
+    public boolean removePiece(Piece.PieceId pieceId) {
+        return pieces.remove(pieceId) != null;
+    }
+
+    @Override
+    public String toString() {
+        return color.getTitle();
     }
 
     private static Map<Piece.PieceId, Piece> createPieces(Color color) {
