@@ -21,7 +21,11 @@ public interface Piece {
 
     Player.Color getColor();
 
-    Set<String> getAvailableMoves(GameContext context);
+    Set<String> getNextMoveCellIds(GameContext context);
+
+    default Set<String> getNextEatCellIds(GameContext context) {
+        return getNextMoveCellIds(context);
+    }
 
     void moveTo(String toCellId);
 

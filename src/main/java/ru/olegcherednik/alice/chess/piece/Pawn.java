@@ -19,10 +19,17 @@ final class Pawn extends AbstractPiece {
     }
 
     @Override
-    public Set<String> getAvailableMoves(GameContext context) {
+    public Set<String> getNextMoveCellIds(GameContext context) {
         Set<String> cellIds = new HashSet<>();
         addOneRowMove(cellIds, context);
         addTwoRowsMove(cellIds, context);
+        cellIds.addAll(getNextEatCellIds(context));
+        return cellIds;
+    }
+
+    @Override
+    public Set<String> getNextEatCellIds(GameContext context) {
+        Set<String> cellIds = new HashSet<>();
         addDiagonalMove(cellIds, -1, context);
         addDiagonalMove(cellIds, 1, context);
         return cellIds;

@@ -3,6 +3,8 @@ package ru.olegcherednik.alice.chess.player;
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.piece.Piece;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -24,6 +26,11 @@ abstract class BasePlayer implements Player {
     @Override
     public final Piece getPiece(Piece.PieceId id) {
         return pieces.getOrDefault(id, Piece.NULL);
+    }
+
+    @Override
+    public final Collection<Piece> getPieces() {
+        return pieces.isEmpty() ? Collections.emptyList() : Collections.unmodifiableCollection(pieces.values());
     }
 
     private static Map<Piece.PieceId, Piece> createPieces(Color color) {

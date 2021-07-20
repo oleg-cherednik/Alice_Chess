@@ -18,7 +18,7 @@ final class Knight extends AbstractPiece {
     }
 
     @Override
-    public Set<String> getAvailableMoves(GameContext context) {
+    public Set<String> getNextMoveCellIds(GameContext context) {
         Set<String> cellIds = new HashSet<>();
         addMove(cellIds, -1, -2, context);
         addMove(cellIds, 1, -2, context);

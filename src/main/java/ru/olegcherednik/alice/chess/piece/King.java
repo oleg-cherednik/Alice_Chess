@@ -18,7 +18,7 @@ final class King extends AbstractPiece {
     }
 
     @Override
-    public Set<String> getAvailableMoves(GameContext context) {
+    public Set<String> getNextMoveCellIds(GameContext context) {
         Set<String> cellIds = new HashSet<>();
         addMove(cellIds, 0, -1, context);
         addMove(cellIds, 0, 1, context);
@@ -45,25 +45,22 @@ final class King extends AbstractPiece {
 
         if (toCell.isNull())
             return;
-        if (isCellEnemyProtected(toCell, context))
+        if (isCellEnemyProtected(context))
             return;
         if (toCell.isEmpty())
             cellIds.add(toCell.getId());
     }
 
-    private static boolean isCellEnemyProtected(Board.Cell toCell, GameContext context) {
+    private static boolean isCellEnemyProtected(GameContext context) {
         Player.Color currentPlayer = context.getCurrentPlayer();
         Board board = context.getBoard();
 
-        for (Board.Cell cell : board.getCells()) {
+        for (Board.Cell cell : board.getAllCells()) {
             if (cell.isEmpty())
                 continue;
             if (cell.getPiece().getColor() == currentPlayer)
                 continue;
-
-            Set<String> availableToCellIds = cell.getPiece().getAvailableMoves(context);
-
-            if (availableToCellIds.contains(toCell.getId()))
+            if (cell.isProtectedBy(currentPlayer.getOpponent()))
                 return true;
         }
 

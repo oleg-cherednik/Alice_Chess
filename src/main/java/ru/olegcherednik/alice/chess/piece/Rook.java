@@ -17,7 +17,7 @@ final class Rook extends AbstractPiece {
     }
 
     @Override
-    public Set<String> getAvailableMoves(GameContext context) {
+    public Set<String> getNextMoveCellIds(GameContext context) {
         Set<String> cellIds = new HashSet<>();
         addMultiMove(cellIds, -1, 0, context);
         addMultiMove(cellIds, 1, 0, context);

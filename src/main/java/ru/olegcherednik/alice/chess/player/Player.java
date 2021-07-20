@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.piece.Piece;
 
+import java.util.Collection;
 import java.util.function.Function;
 
 /**
@@ -15,6 +16,8 @@ import java.util.function.Function;
 public interface Player {
 
     Piece getPiece(Piece.PieceId id);
+
+    Collection<Piece> getPieces();
 
     Color getColor();
 
@@ -39,6 +42,10 @@ public interface Player {
         WHITE("White");
 
         private final String title;
+
+        public final Color getOpponent() {
+            return this == BLACK ? WHITE : BLACK;
+        }
     }
 
 }

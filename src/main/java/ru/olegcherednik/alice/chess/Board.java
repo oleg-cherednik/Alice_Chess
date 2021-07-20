@@ -1,13 +1,13 @@
 package ru.olegcherednik.alice.chess;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +23,8 @@ public final class Board {
     public static final int HEIGHT = 8;
 
     private final Cell[][] cells = createCells();
+    @Getter
+    private final List<Cell> allCells = buildCellsList(cells);
 
     private static Cell[][] createCells() {
         Cell[][] cells = new Cell[WIDTH][HEIGHT];
@@ -32,6 +34,16 @@ public final class Board {
                 cells[row][col] = Cell.createEmpty(Processor.getCellId(col, row));
 
         return cells;
+    }
+
+    private static List<Cell> buildCellsList(Cell[][] cells) {
+        List<Cell> res = new ArrayList<>();
+
+        for (int row = 0; row < cells.length; row++)
+            for (int col = 0; col < cells[row].length; col++)
+                res.add(cells[row][col]);
+
+        return Collections.unmodifiableList(res);
     }
 
     public Board(Player topPlayer, Player bottomPlayer) {
@@ -87,18 +99,7 @@ public final class Board {
         return cells[row][col];
     }
 
-    public List<Cell> getCells() {
-        List<Cell> cells = new ArrayList<>(WIDTH * HEIGHT);
-
-        for (int row = 0; row < HEIGHT; row++)
-            for (int col = 0; col < WIDTH; col++)
-                cells.add(this.cells[row][col]);
-
-        return cells;
-    }
-
     @Getter
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Cell {
 
         public static final Cell NULL = createEmpty("----");
@@ -106,9 +107,16 @@ public final class Board {
         /** Format is D5 or A1 */
         private final String id;
         private Piece piece;
+        @Setter
+        private Player.Color underProtection;
 
         public static Cell createEmpty(String id) {
             return new Cell(id, Piece.NULL);
+        }
+
+        private Cell(String id, Piece piece) {
+            this.id = id;
+            this.piece = piece;
         }
 
         public boolean isNull() {
@@ -117,6 +125,10 @@ public final class Board {
 
         public boolean isEmpty() {
             return piece == Piece.NULL;
+        }
+
+        public boolean isProtectedBy(Player.Color player) {
+            return underProtection == player;
         }
 
         public void clear() {

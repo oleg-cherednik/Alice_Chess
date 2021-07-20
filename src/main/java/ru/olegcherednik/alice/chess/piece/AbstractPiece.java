@@ -26,7 +26,7 @@ abstract class AbstractPiece implements Piece {
     protected int row = -1;
 
     @Override
-    public Set<String> getAvailableMoves(GameContext context) {
+    public Set<String> getNextMoveCellIds(GameContext context) {
         return Collections.emptySet();
     }
 

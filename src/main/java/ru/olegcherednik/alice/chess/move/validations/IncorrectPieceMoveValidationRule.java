@@ -18,7 +18,7 @@ final class IncorrectPieceMoveValidationRule implements ValidationRule {
         String fromCellId = Ply.getFromCellId(strPly);
         String toCellId = Ply.getToCellId(strPly);
         Piece piece = context.getBoard().getCell(fromCellId).getPiece();
-        Set<String> availableToCellIds = piece.getAvailableMoves(context);
+        Set<String> availableToCellIds = piece.getNextMoveCellIds(context);
 
         if (!availableToCellIds.contains(toCellId))
             throw new ChessException(String.format("Piece '%s' on cell '%s' cannot move to the cell '%s'",
