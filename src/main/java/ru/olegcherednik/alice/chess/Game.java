@@ -8,8 +8,10 @@ import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
+import ru.olegcherednik.alice.chess.visualization.unicode.UnicodeBoardPrintStrategy;
 
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 /**
@@ -78,6 +80,8 @@ public final class Game implements GameContext {
         out.println();
     }
 
+    // ========== GameContext ==========
+
     @Override
     public Scanner scan() {
         return scan;
@@ -91,6 +95,18 @@ public final class Game implements GameContext {
     @Override
     public Player.Color getCurrentPlayer() {
         return processor.getCurrentPlayer().getColor();
+    }
+
+    // ========== Main ==========
+
+    public static void main(String... args) throws UnsupportedEncodingException, InterruptedException {
+        InitialContext context = InitialContext.builder()
+//                                           .boardPrintStrategy(AsciiBoardPrintStrategy.INSTANCE)
+                                               .boardPrintStrategy(UnicodeBoardPrintStrategy.INSTANCE)
+                                               .playerWhiteType(Player.Type.HUMAN)
+                                               .playerBlackType(Player.Type.HUMAN)
+                                               .build();
+        new Game(context).start();
     }
 
 }

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.Board;
 import ru.olegcherednik.alice.chess.GameContext;
-import ru.olegcherednik.alice.chess.move.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
 
 import java.util.Collections;
@@ -35,8 +34,8 @@ abstract class AbstractPiece implements Piece {
         if (col != -1 && row != -1)
             totalMoves++;
 
-        col = Processor.getCellCol(toCellId);
-        row = Processor.getCellRow(toCellId);
+        col = Board.Cell.getCellCol(toCellId);
+        row = Board.Cell.getCellRow(toCellId);
     }
 
     /**
@@ -73,7 +72,7 @@ abstract class AbstractPiece implements Piece {
 
     @Override
     public String toString() {
-        return id + "_" + color + '_' + Processor.getCellId(col, row);
+        return id + "_" + color + '_' + Board.Cell.getCellId(col, row);
     }
 
 }

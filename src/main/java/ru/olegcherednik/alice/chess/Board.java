@@ -31,7 +31,7 @@ public final class Board {
 
         for (int row = 0; row < WIDTH; row++)
             for (int col = 0; col < HEIGHT; col++)
-                cells[row][col] = Cell.createEmpty(Processor.getCellId(col, row));
+                cells[row][col] = Cell.createEmpty(Board.Cell.getCellId(col, row));
 
         return cells;
     }
@@ -57,7 +57,7 @@ public final class Board {
             int col = id.getInitCol();
             Piece piece = player.getPiece(id);
             cells[row][col].setPiece(piece);
-            piece.moveTo(Processor.getCellId(col, row));
+            piece.moveTo(Board.Cell.getCellId(col, row));
         }
     }
 
@@ -88,8 +88,8 @@ public final class Board {
     }
 
     public Cell getCell(String cellId) {
-        int row = Processor.getCellRow(cellId);
-        int col = Processor.getCellCol(cellId);
+        int row = Board.Cell.getCellRow(cellId);
+        int col = Board.Cell.getCellCol(cellId);
 
         if (row < 0 || row >= cells.length)
             return Cell.NULL;
@@ -142,6 +142,22 @@ public final class Board {
         public void setPiece(Piece piece) {
             if (this != NULL)
                 this.piece = Optional.ofNullable(piece).orElse(Piece.NULL);
+        }
+
+        public static String normalizeStrPly(String strPly) {
+            return strPly.toLowerCase().trim();
+        }
+
+        public static int getCellRow(String cellId) {
+            return '8' - cellId.charAt(1);
+        }
+
+        public static int getCellCol(String cellId) {
+            return cellId.charAt(0) - 'a';
+        }
+
+        public static String getCellId(int col, int row) {
+            return (char)('a' + col) + String.valueOf(8 - row);
         }
 
         @Override
