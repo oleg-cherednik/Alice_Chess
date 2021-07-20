@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Chess processor is responsible for game logic independently from game mechanic like move pieces on the board.
+ *
  * @author Oleg Cherednik
  * @since 19.07.2021
  */
@@ -33,15 +35,15 @@ public final class Processor {
         this.currentPlayer = currentPlayer;
     }
 
-    public void proceed(GameContext context) {
-        Ply ply = doNextPly(context);
+    public void doNextPly(GameContext context) {
+        Ply ply = getNextPly(context);
         updateCurrentPlayerPieces(ply, context);
         movePiece(ply, context);
         updateCurrentPlayerCellProtection(context);
         moveToNextPlayer();
     }
 
-    private Ply doNextPly(GameContext context) {
+    private Ply getNextPly(GameContext context) {
         context.getOut().format("Move %d (%s) > ", moveNo + 1, currentPlayer.getColor().getTitle());
 
         String strPly = Board.Cell.normalizeStrPly(currentPlayer.nextPly(context));

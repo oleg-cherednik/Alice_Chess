@@ -45,7 +45,7 @@ public final class Game implements GameContext {
         while (true) {
             try {
                 print();
-                processor.proceed(this);
+                processor.doNextPly(this);
             } catch (NotImplementedException e) {
                 err.println(e.getMessage());
                 break;
