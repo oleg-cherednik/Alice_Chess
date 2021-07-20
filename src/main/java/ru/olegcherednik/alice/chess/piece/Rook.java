@@ -3,8 +3,9 @@ package ru.olegcherednik.alice.chess.piece;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.player.Player;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Oleg Cherednik
@@ -12,18 +13,19 @@ import java.util.Set;
  */
 final class Rook extends AbstractPiece {
 
-    public Rook(PieceId id, Player.Color color) {
+    public Rook(Id id, Player.Color color) {
         super(id, color);
     }
 
     @Override
     public Set<String> getNextMoveCellIds(GameContext context) {
-        Set<String> cellIds = new HashSet<>();
-        addMultiMove(cellIds, -1, 0, context);
-        addMultiMove(cellIds, 1, 0, context);
-        addMultiMove(cellIds, 0, -1, context);
-        addMultiMove(cellIds, 0, 1, context);
-        return cellIds;
+        return Stream.of(
+                getMultiMoves(-1, 0, context),
+                getMultiMoves(1, 0, context),
+                getMultiMoves(0, -1, context),
+                getMultiMoves(0, 1, context))
+                     .flatMap(Set::stream)
+                     .collect(Collectors.toSet());
     }
 
     // TODO add castling

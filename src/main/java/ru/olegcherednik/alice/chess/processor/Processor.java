@@ -5,9 +5,9 @@ import ru.olegcherednik.alice.chess.Board;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
 import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
-import ru.olegcherednik.alice.chess.processor.validations.ValidationProcessor;
 import ru.olegcherednik.alice.chess.piece.Piece;
 import ru.olegcherednik.alice.chess.player.Player;
+import ru.olegcherednik.alice.chess.processor.validations.ValidationProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public final class Processor {
         if (toCell.isNull() || toCell.isEmpty())
             return;
 
-        Piece.PieceId pieceId = toCell.getPiece().getId();
+        Piece.Id pieceId = toCell.getPiece().getId();
 
         if (!currentPlayer.removePiece(pieceId))
             throw new ChessException(String.format("Player '%s' does not have piece '%s' to remove",
@@ -102,6 +102,7 @@ public final class Processor {
         else
             throw new NotImplementedException(String.format("Unknown player '%s'", currentPlayer));
 
+        // two plies are equal to one move; the While goes first, so change move number on each white's ply
         if (currentPlayer.getColor() == Player.Color.WHITE)
             moveNo++;
     }

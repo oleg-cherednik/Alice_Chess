@@ -3,8 +3,6 @@ package ru.olegcherednik.alice.chess.processor.validations;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,16 +12,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ValidationFactory {
 
-    // order is important
+    /** rule order is important */
     public static List<ValidationRule> createValidationRules() {
-        List<ValidationRule> rules = new ArrayList<>();
-        rules.add(new IncorrectInputValidationRule());
-        rules.add(new CellWithinBoardValidationRule());
-        rules.add(new CellEmptyValidationRule());
-        rules.add(new EatOwnPieceValidationRule());
-        rules.add(new PlyOwnPieceValidationRule());
-        rules.add(new IncorrectPieceMoveValidationRule());
-        return Collections.unmodifiableList(rules);
+        return List.of(
+                new IncorrectInputValidationRule(),
+                new CellWithinBoardValidationRule(),
+                new CellEmptyValidationRule(),
+                new EatOwnPieceValidationRule(),
+                new PlyOwnPieceValidationRule(),
+                new IncorrectPieceMoveValidationRule());
     }
 
 }

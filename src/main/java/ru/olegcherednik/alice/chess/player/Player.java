@@ -15,11 +15,11 @@ import java.util.function.Function;
  */
 public interface Player {
 
-    Piece getPiece(Piece.PieceId id);
+    Piece getPiece(Piece.Id id);
 
     Collection<Piece> getPieces();
 
-    boolean removePiece(Piece.PieceId pieceId);
+    boolean removePiece(Piece.Id pieceId);
 
     Color getColor();
 

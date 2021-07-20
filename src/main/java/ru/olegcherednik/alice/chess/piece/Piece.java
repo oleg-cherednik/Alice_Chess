@@ -17,12 +17,14 @@ public interface Piece {
 
     Piece NULL = new NullPiece();
 
-    PieceId getId();
+    Id getId();
 
     Player.Color getColor();
 
+    /** Retrieves available moves for the current piece. */
     Set<String> getNextMoveCellIds(GameContext context);
 
+    /** Retrieves moves that potentially can eat opponent's pieces */
     default Set<String> getNextEatCellIds(GameContext context) {
         return getNextMoveCellIds(context);
     }
@@ -52,7 +54,7 @@ public interface Piece {
 
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-    enum PieceId {
+    enum Id {
         ROOK_A(Piece.Type.ROOK, 0, Rook::new),
         KNIGHT_B(Piece.Type.KNIGHT, 1, Knight::new),
         BISHOP_C(Piece.Type.BISHOP, 2, Bishop::new),
@@ -72,7 +74,7 @@ public interface Piece {
 
         private final Piece.Type type;
         private final int initCol;
-        private final BiFunction<Piece.PieceId, Player.Color, Piece> createPiece;
+        private final BiFunction<Id, Player.Color, Piece> createPiece;
 
         public final Piece create(Player.Color color) {
             return createPiece.apply(this, color);

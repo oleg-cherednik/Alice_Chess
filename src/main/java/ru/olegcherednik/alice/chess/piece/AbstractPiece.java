@@ -8,6 +8,7 @@ import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.player.Player;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -18,16 +19,11 @@ import java.util.Set;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 abstract class AbstractPiece implements Piece {
 
-    protected final PieceId id;
+    protected final Id id;
     protected final Player.Color color;
     protected int totalMoves;
     protected int col = -1;
     protected int row = -1;
-
-    @Override
-    public Set<String> getNextMoveCellIds(GameContext context) {
-        return Collections.emptySet();
-    }
 
     @Override
     public void moveTo(String toCellId) {
@@ -46,9 +42,10 @@ abstract class AbstractPiece implements Piece {
      * <li>all previous cells are empty</li>
      * </ul>
      */
-    protected void addMultiMove(Set<String> cellIds, int incCol, int incRow, GameContext context) {
+    protected Set<String> getMultiMoves(int incCol, int incRow, GameContext context) {
         int row = this.row;
         int col = this.col;
+        Set<String> cellIds = new HashSet<>();
 
         do {
             row += incRow;
@@ -68,6 +65,8 @@ abstract class AbstractPiece implements Piece {
                 break;
             }
         } while (true);
+
+        return cellIds.isEmpty() ? Set.of() : Collections.unmodifiableSet(cellIds);
     }
 
     @Override

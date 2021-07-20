@@ -4,8 +4,10 @@ import ru.olegcherednik.alice.chess.Board;
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.player.Player;
 
-import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Oleg Cherednik
@@ -13,22 +15,23 @@ import java.util.Set;
  */
 final class Knight extends AbstractPiece {
 
-    public Knight(PieceId id, Player.Color color) {
+    public Knight(Id id, Player.Color color) {
         super(id, color);
     }
 
     @Override
     public Set<String> getNextMoveCellIds(GameContext context) {
-        Set<String> cellIds = new HashSet<>();
-        addMove(cellIds, -1, -2, context);
-        addMove(cellIds, 1, -2, context);
-        addMove(cellIds, -1, 2, context);
-        addMove(cellIds, 1, 2, context);
-        addMove(cellIds, -2, -1, context);
-        addMove(cellIds, 2, -1, context);
-        addMove(cellIds, -2, 1, context);
-        addMove(cellIds, 2, 1, context);
-        return cellIds;
+        return Stream.of(
+                getMoveCellId(-1, -2, context),
+                getMoveCellId(1, -2, context),
+                getMoveCellId(-1, 2, context),
+                getMoveCellId(1, 2, context),
+                getMoveCellId(-2, -1, context),
+                getMoveCellId(2, -1, context),
+                getMoveCellId(-2, 1, context),
+                getMoveCellId(2, 1, context))
+                     .filter(Objects::nonNull)
+                     .collect(Collectors.toSet());
     }
 
     /**
@@ -38,16 +41,17 @@ final class Knight extends AbstractPiece {
      * <li>cell is taken by other player's piece</li>
      * </ul>
      */
-    private void addMove(Set<String> cellIds, int incCol, int incRow, GameContext context) {
+    private String getMoveCellId(int incCol, int incRow, GameContext context) {
         Player.Color currentPlayer = context.getCurrentPlayer();
         Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
         if (toCell.isNull())
-            return;
+            return null;
         if (toCell.isEmpty())
-            cellIds.add(toCell.getId());
-        else if (toCell.getPiece().getColor() != currentPlayer)
-            cellIds.add(toCell.getId());
+            return toCell.getId();
+        if (toCell.getPiece().getColor() != currentPlayer)
+            return toCell.getId();
+        return null;
     }
 
 }

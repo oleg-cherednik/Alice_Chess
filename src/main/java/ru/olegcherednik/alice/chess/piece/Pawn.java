@@ -5,8 +5,10 @@ import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
 import ru.olegcherednik.alice.chess.player.Player;
 
-import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Oleg Cherednik
@@ -14,26 +16,28 @@ import java.util.Set;
  */
 final class Pawn extends AbstractPiece {
 
-    public Pawn(PieceId id, Player.Color color) {
+    public Pawn(Id id, Player.Color color) {
         super(id, color);
     }
 
     @Override
     public Set<String> getNextMoveCellIds(GameContext context) {
-        Set<String> cellIds = new HashSet<>();
-        addOneRowMove(cellIds, context);
-        addTwoRowsMove(cellIds, context);
-        addDiagonalMove(cellIds, -1, context);
-        addDiagonalMove(cellIds, 1, context);
-        return cellIds;
+        return Stream.of(
+                addOneRowMoveCellId(context),
+                addTwoRowsMoveCellId(context),
+                addDiagonalMoveCellId(-1, context),
+                addDiagonalMoveCellId(1, context))
+                     .filter(Objects::nonNull)
+                     .collect(Collectors.toSet());
     }
 
     @Override
     public Set<String> getNextEatCellIds(GameContext context) {
-        Set<String> cellIds = new HashSet<>();
-        addEatMove(cellIds, -1, context);
-        addEatMove(cellIds, 1, context);
-        return cellIds;
+        return Stream.of(
+                addEatMoveCellId(-1, context),
+                addEatMoveCellId(1, context))
+                     .filter(Objects::nonNull)
+                     .collect(Collectors.toSet());
     }
 
     /**
@@ -42,14 +46,15 @@ final class Pawn extends AbstractPiece {
      * <li>cell is empty</li>
      * </ul>
      */
-    private void addOneRowMove(Set<String> cellIds, GameContext context) {
+    private String addOneRowMoveCellId(GameContext context) {
         int incRow = getIncRow(context);
         Board.Cell toCell = context.getBoard().getCell(col, row + incRow);
 
         if (toCell.isNull())
-            return;
+            return null;
         if (toCell.isEmpty())
-            cellIds.add(toCell.getId());
+            return toCell.getId();
+        return null;
     }
 
     /**
@@ -60,20 +65,19 @@ final class Pawn extends AbstractPiece {
      * <li>cell +2 is empty</li>
      * </ul>
      */
-    private void addTwoRowsMove(Set<String> cellIds, GameContext context) {
+    private String addTwoRowsMoveCellId(GameContext context) {
         if (totalMoves != 0)
-            return;
+            return null;
 
         int incRow = getIncRow(context);
         Board.Cell toCell1 = context.getBoard().getCell(col, row + incRow);
         Board.Cell toCell2 = context.getBoard().getCell(col, row + incRow + incRow);
 
         if (toCell1.isNull() || !toCell1.isEmpty())
-            return;
+            return null;
         if (toCell2.isNull() || !toCell2.isEmpty())
-            return;
-
-        cellIds.add(toCell2.getId());
+            return null;
+        return toCell2.getId();
     }
 
     /**
@@ -82,31 +86,31 @@ final class Pawn extends AbstractPiece {
      * <li>cell is taken by other player's piece</li>
      * </ul>
      */
-    private void addDiagonalMove(Set<String> cellIds, int incCol, GameContext context) {
+    private String addDiagonalMoveCellId(int incCol, GameContext context) {
         int incRow = getIncRow(context);
         Player.Color currentPlayer = context.getCurrentPlayer();
         Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
         if (toCell.isNull() || toCell.isEmpty())
-            return;
+            return null;
         if (toCell.getPiece().getColor() == currentPlayer)
-            return;
-
-        cellIds.add(toCell.getId());
+            return null;
+        return toCell.getId();
     }
 
     // TODO add Promotion
     // TODO add En passant
 
-    private void addEatMove(Set<String> cellIds, int incCol, GameContext context) {
+    private String addEatMoveCellId(int incCol, GameContext context) {
         int incRow = getIncRow(context);
         Player.Color currentPlayer = context.getCurrentPlayer();
         Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
         if (toCell.isNull())
-            return;
+            return null;
         if (toCell.isEmpty() || toCell.getPiece().getColor() != currentPlayer)
-            cellIds.add(toCell.getId());
+            return toCell.getId();
+        return null;
     }
 
     private static int getIncRow(GameContext context) {

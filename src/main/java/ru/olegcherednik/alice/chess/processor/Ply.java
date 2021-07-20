@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import ru.olegcherednik.alice.chess.player.Player;
 
 /**
- * Ply is the one move of any player, i.e. a half of the move. One move equals to two plies.
+ * Ply is the one move of any player, i.e. a half of the move. One move equals to two plies.<br>
+ * <tt>strPly</tt> is the string representation of the {@code Ply} and has format like <tt>d2d4</tt>, which means the a piece goes from the cell
+ * <tt>d2</tt> to the cell <tt>d4</tt>.
  *
  * @author Oleg Cherednik
  * @since 19.07.2021

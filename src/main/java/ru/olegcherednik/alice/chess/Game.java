@@ -8,8 +8,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
 import ru.olegcherednik.alice.chess.exceptions.NotImplementedException;
-import ru.olegcherednik.alice.chess.processor.Processor;
 import ru.olegcherednik.alice.chess.player.Player;
+import ru.olegcherednik.alice.chess.processor.Processor;
 import ru.olegcherednik.alice.chess.visualization.BoardPrintStrategy;
 import ru.olegcherednik.alice.chess.visualization.ascii.AsciiBoardPrintStrategy;
 import ru.olegcherednik.alice.chess.visualization.unicode.UnicodeBoardPrintStrategy;
@@ -67,8 +67,6 @@ public final class Game implements GameContext {
         out.println();
     }
 
-    // ========== GameContext ==========
-
     @Override
     public Scanner scan() {
         return scan;
@@ -83,8 +81,6 @@ public final class Game implements GameContext {
     public Player.Color getCurrentPlayer() {
         return processor.getCurrentPlayer().getColor();
     }
-
-    // ========== Main ==========
 
     public static void main(String... args) throws Exception {
         Options options = new Options();

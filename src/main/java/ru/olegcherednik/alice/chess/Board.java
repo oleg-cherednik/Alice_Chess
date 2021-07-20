@@ -51,7 +51,7 @@ public final class Board {
     }
 
     private void addPlayerPieces(Player player, int mainRow, int pawnsRow) {
-        for (Piece.PieceId id : Piece.PieceId.values()) {
+        for (Piece.Id id : Piece.Id.values()) {
             int row = id.getType() == Piece.Type.PAWN ? pawnsRow : mainRow;
             int col = id.getInitCol();
             Piece piece = player.getPiece(id);
@@ -103,7 +103,7 @@ public final class Board {
 
         public static final Cell NULL = createEmpty("----");
 
-        /** Format is D5 or A1 */
+        /** Format is d5 or a1 */
         private final String id;
         private Piece piece;
         @Setter

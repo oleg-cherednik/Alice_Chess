@@ -3,10 +3,13 @@ package ru.olegcherednik.alice.chess.player;
 import lombok.Getter;
 import ru.olegcherednik.alice.chess.piece.Piece;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Oleg Cherednik
@@ -16,7 +19,7 @@ abstract class AbstractPlayer implements Player {
 
     @Getter
     protected final Color color;
-    protected final Map<Piece.PieceId, Piece> pieces;
+    protected final Map<Piece.Id, Piece> pieces;
 
     protected AbstractPlayer(Color color) {
         this.color = color;
@@ -24,17 +27,17 @@ abstract class AbstractPlayer implements Player {
     }
 
     @Override
-    public Piece getPiece(Piece.PieceId id) {
+    public Piece getPiece(Piece.Id id) {
         return pieces.getOrDefault(id, Piece.NULL);
     }
 
     @Override
     public Collection<Piece> getPieces() {
-        return pieces.isEmpty() ? Collections.emptyList() : Collections.unmodifiableCollection(pieces.values());
+        return pieces.isEmpty() ? List.of() : Collections.unmodifiableCollection(pieces.values());
     }
 
     @Override
-    public boolean removePiece(Piece.PieceId pieceId) {
+    public boolean removePiece(Piece.Id pieceId) {
         return pieces.remove(pieceId) != null;
     }
 
@@ -43,13 +46,10 @@ abstract class AbstractPlayer implements Player {
         return color.getTitle();
     }
 
-    private static Map<Piece.PieceId, Piece> createPieces(Color color) {
-        Map<Piece.PieceId, Piece> pieces = new EnumMap<>(Piece.PieceId.class);
-
-        for (Piece.PieceId id : Piece.PieceId.values())
-            pieces.put(id, id.create(color));
-
-        return pieces;
+    private static Map<Piece.Id, Piece> createPieces(Color color) {
+        return Arrays.stream(Piece.Id.values())
+                     .map(pieceId -> pieceId.create(color))
+                     .collect(Collectors.toMap(Piece::getId, Function.identity()));
     }
 
 }
