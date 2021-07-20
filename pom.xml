@@ -8,7 +8,7 @@
     <artifactId>alice-chess</artifactId>
     <version>1.0</version>
 
-    <name>alice-chess</name>
+    <name>Alice Chess</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
