@@ -21,6 +21,7 @@ public interface GameContext {
 
     Player getOpponentPlayer();
 
+    /** Retrieves {@literal true} when white pieces are at the bottom of the board */
     default boolean whitePlayerBottom() {
         return true;
     }

@@ -18,6 +18,8 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
+ * Main class of the application. It's responsible for a game initialization and invoke processor.
+ *
  * @author Oleg Cherednik
  * @since 18.07.2021
  */
@@ -45,7 +47,7 @@ public final class Game implements GameContext {
     public void start() throws InterruptedException {
         out.println("LET'S PLAY CHESS!!!");
         out.println("Player 1 (White) vs Player 2 (Black)");
-        out.println("(move d2d4 -> move piece from cell 'd2' to 'd4')");
+        out.println("(just type a move like 'd2d4' -> move piece from cell 'd2' to 'd4')");
         out.println();
 
         while (true) {
