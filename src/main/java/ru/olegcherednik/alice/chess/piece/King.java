@@ -29,16 +29,16 @@ final class King extends AbstractPiece {
         return getMoves(false, context);
     }
 
-    private Set<String> getMoves(boolean checkProtection, GameContext context) {
+    private Set<String> getMoves(boolean checkCellPressure, GameContext context) {
         return Stream.of(
-                getMoveCellId(0, -1, checkProtection, context),
-                getMoveCellId(0, 1, checkProtection, context),
-                getMoveCellId(-1, 0, checkProtection, context),
-                getMoveCellId(1, 0, checkProtection, context),
-                getMoveCellId(-1, -1, checkProtection, context),
-                getMoveCellId(-1, 1, checkProtection, context),
-                getMoveCellId(1, -1, checkProtection, context),
-                getMoveCellId(1, 1, checkProtection, context))
+                getMoveCellId(0, -1, checkCellPressure, context),
+                getMoveCellId(0, 1, checkCellPressure, context),
+                getMoveCellId(-1, 0, checkCellPressure, context),
+                getMoveCellId(1, 0, checkCellPressure, context),
+                getMoveCellId(-1, -1, checkCellPressure, context),
+                getMoveCellId(-1, 1, checkCellPressure, context),
+                getMoveCellId(1, -1, checkCellPressure, context),
+                getMoveCellId(1, 1, checkCellPressure, context))
                      .filter(Objects::nonNull)
                      .collect(Collectors.toSet());
     }
@@ -51,16 +51,15 @@ final class King extends AbstractPiece {
      * <li>cell is taken by other player's piece</li>
      * </ul>
      */
-    private String getMoveCellId(int incCol, int incRow, boolean checkProtection, GameContext context) {
+    private String getMoveCellId(int incCol, int incRow, boolean checkCellPressure, GameContext context) {
         Board board = context.getBoard();
         Board.Cell toCell = board.getCell(col + incCol, row + incRow);
-        Player.Color currentPlayer = context.getCurrentPlayer();
 
         if (toCell.isNull())
             return null;
-        if (checkProtection && !toCell.isNeutralOrProtectedBy(currentPlayer))
+        if (checkCellPressure && !toCell.isNeutralOrUnderPressureBy(color))
             return null;
-        if (toCell.isEmpty() || toCell.getPiece().getColor() != currentPlayer)
+        if (toCell.isEmpty() || toCell.getPiece().getColor() != color)
             return toCell.getId();
         return null;
     }

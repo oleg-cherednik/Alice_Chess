@@ -34,6 +34,11 @@ abstract class AbstractPiece implements Piece {
         row = Board.Cell.getCellRow(toCellId);
     }
 
+    @Override
+    public String getCellId() {
+        return Board.Cell.getCellId(col, row);
+    }
+
     /**
      * <ul>
      * Piece can move only if:

@@ -50,7 +50,8 @@ public final class Game implements GameContext {
         while (true) {
             try {
                 print();
-                processor.doNextPly(this);
+                if (processor.doNextPlyAndFinishGame(this))
+                    break;
             } catch(NotImplementedException e) {
                 err.println(e.getMessage());
                 break;
@@ -60,6 +61,9 @@ public final class Game implements GameContext {
                 Thread.sleep(200);
             }
         }
+
+        out.println("Winner: " + processor.getCurrentPlayer());
+        out.println("GAME OVER.");
     }
 
     private void print() {

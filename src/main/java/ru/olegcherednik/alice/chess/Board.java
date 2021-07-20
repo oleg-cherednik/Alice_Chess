@@ -94,20 +94,21 @@ public final class Board {
             return Cell.NULL;
         if (col < 0 || col >= cells[row].length)
             return Cell.NULL;
-
         return cells[row][col];
     }
 
-    @Getter
     public static final class Cell {
 
         public static final Cell NULL = createEmpty("----");
 
         /** Format is d5 or a1 */
+        @Getter
         private final String id;
+        @Getter
         private Piece piece;
+        /** cell is under pressure means that player can move a piece to this cell and eat opponent's piece */
         @Setter
-        private Player.Color protectedBy;
+        private Player.Color underPressureBy;
 
         public static Cell createEmpty(String id) {
             return new Cell(id, Piece.NULL);
@@ -126,12 +127,16 @@ public final class Board {
             return piece == Piece.NULL;
         }
 
-        public void clearProtection() {
-            protectedBy = null;
+        public void clearUnderPressure() {
+            underPressureBy = null;
         }
 
-        public boolean isNeutralOrProtectedBy(Player.Color player) {
-            return protectedBy == null || protectedBy == player;
+        public boolean isNeutralOrUnderPressureBy(Player.Color player) {
+            return underPressureBy == null || isUnderPressureBy(player);
+        }
+
+        public boolean isUnderPressureBy(Player.Color player) {
+            return underPressureBy == player;
         }
 
         public void clear() {

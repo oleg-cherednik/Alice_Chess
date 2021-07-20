@@ -19,6 +19,8 @@ public interface Piece {
 
     Id getId();
 
+    String getCellId();
+
     Player.Color getColor();
 
     /** Retrieves available moves for the current piece. */

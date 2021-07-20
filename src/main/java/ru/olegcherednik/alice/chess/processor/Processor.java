@@ -11,6 +11,7 @@ import ru.olegcherednik.alice.chess.processor.validations.ValidationProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Chess processor is responsible for game logic independently from game mechanic like move pieces on the board.
@@ -35,13 +36,24 @@ public final class Processor {
         this.currentPlayer = currentPlayer;
     }
 
-    public void doNextPly(GameContext context) {
+    /**
+     * Do next step (Ply) for the {@code Processor#currentPlayer} and retrieve {@literal true} in case of game should be finished.
+     *
+     * @return {@literal true} in case of game should be finished
+     */
+    public boolean doNextPlyAndFinishGame(GameContext context) {
         Ply ply = getNextPly(context);
         updateCurrentPlayerPieces(ply, context);
         movePiece(ply, context);
         updateCurrentPlayerCellProtection(context);
+
+        if (isGameFinished(context))
+            return true;
+
         checkEndgame();
         moveToNextPlayer();
+
+        return false;
     }
 
     private Ply getNextPly(GameContext context) {
@@ -81,11 +93,38 @@ public final class Processor {
         Board board = context.getBoard();
 
         for (Board.Cell cell : board.getAllCells())
-            cell.clearProtection();
+            cell.clearUnderPressure();
 
         for (Piece piece : currentPlayer.getPieces())
             for (String cellId : piece.getNextEatCellIds(context))
-                board.getCell(cellId).setProtectedBy(currentPlayer.getColor());
+                board.getCell(cellId).setUnderPressureBy(currentPlayer.getColor());
+    }
+
+    private boolean isGameFinished(GameContext context) {
+        if (checkMatePosition(context))
+            return true;
+
+        return false;
+    }
+
+    /** Mate for a king is possible when king's cell is under the pressure of the opponent player and king does not have available moves */
+    private boolean checkMatePosition(GameContext context) {
+        Player opponentPlayer = getOpponentPlayer();
+        Piece king = opponentPlayer.getPiece(Piece.Id.KING_E);
+        Board.Cell cell = context.getBoard().getCell(king.getCellId());
+
+        // not a mate when king's cell is not under the opponent player pressure
+        if (!cell.isUnderPressureBy(currentPlayer.getColor()))
+            return false;
+
+        Set<String> cellIds = king.getNextMoveCellIds(context);
+
+        if (cellIds.isEmpty()) {
+            context.getOut().format("Mate to '%s' king\n", opponentPlayer);
+            return true;
+        }
+
+        return false;
     }
 
     private void checkEndgame() {
@@ -95,16 +134,18 @@ public final class Processor {
     }
 
     private void moveToNextPlayer() {
-        if (currentPlayer == playerWhite)
-            currentPlayer = playerBlack;
-        else if (currentPlayer == playerBlack)
-            currentPlayer = playerWhite;
-        else
-            throw new NotImplementedException(String.format("Unknown player '%s'", currentPlayer));
+        currentPlayer = getOpponentPlayer();
 
         // two plies are equal to one move; the While goes first, so change move number on each white's ply
         if (currentPlayer.getColor() == Player.Color.WHITE)
             moveNo++;
     }
 
+    private Player getOpponentPlayer() {
+        if (currentPlayer == playerWhite)
+            return playerBlack;
+        if (currentPlayer == playerBlack)
+            return playerWhite;
+        throw new NotImplementedException(String.format("Unknown player '%s'", currentPlayer));
+    }
 }
