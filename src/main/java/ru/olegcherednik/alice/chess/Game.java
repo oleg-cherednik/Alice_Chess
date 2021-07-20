@@ -62,6 +62,7 @@ public final class Game implements GameContext {
             }
         }
 
+        print();
         out.println("Winner: " + processor.getCurrentPlayer());
         out.println("GAME OVER.");
     }
@@ -82,8 +83,13 @@ public final class Game implements GameContext {
     }
 
     @Override
-    public Player.Color getCurrentPlayer() {
-        return processor.getCurrentPlayer().getColor();
+    public Player getCurrentPlayer() {
+        return processor.getCurrentPlayer();
+    }
+
+    @Override
+    public Player getOpponentPlayer() {
+        return processor.getOpponentPlayer();
     }
 
     private static final String MENU_OPTION_UTF8 = "utf8";

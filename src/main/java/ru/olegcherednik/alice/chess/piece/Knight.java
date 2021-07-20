@@ -42,7 +42,7 @@ final class Knight extends AbstractPiece {
      * </ul>
      */
     private String getMoveCellId(int incCol, int incRow, GameContext context) {
-        Player.Color currentPlayer = context.getCurrentPlayer();
+        Player.Color currentPlayer = context.getCurrentPlayer().getColor();
         Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
         if (toCell.isNull())

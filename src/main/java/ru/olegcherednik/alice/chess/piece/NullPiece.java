@@ -20,6 +20,11 @@ final class NullPiece extends AbstractPiece {
     }
 
     @Override
+    public boolean isUnderPressure(GameContext context) {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "<null>";
     }

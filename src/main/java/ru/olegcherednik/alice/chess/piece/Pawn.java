@@ -88,7 +88,7 @@ final class Pawn extends AbstractPiece {
      */
     private String addDiagonalMoveCellId(int incCol, GameContext context) {
         int incRow = getIncRow(context);
-        Player.Color currentPlayer = context.getCurrentPlayer();
+        Player.Color currentPlayer = context.getCurrentPlayer().getColor();
         Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
         if (toCell.isNull() || toCell.isEmpty())
@@ -103,7 +103,7 @@ final class Pawn extends AbstractPiece {
 
     private String addEatMoveCellId(int incCol, GameContext context) {
         int incRow = getIncRow(context);
-        Player.Color currentPlayer = context.getCurrentPlayer();
+        Player.Color currentPlayer = context.getCurrentPlayer().getColor();
         Board.Cell toCell = context.getBoard().getCell(col + incCol, row + incRow);
 
         if (toCell.isNull())
@@ -114,7 +114,7 @@ final class Pawn extends AbstractPiece {
     }
 
     private static int getIncRow(GameContext context) {
-        Player.Color currentPlayer = context.getCurrentPlayer();
+        Player.Color currentPlayer = context.getCurrentPlayer().getColor();
 
         if (currentPlayer == Player.Color.WHITE)
             return context.whitePlayerBottom() ? -1 : 1;

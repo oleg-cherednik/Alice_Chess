@@ -23,6 +23,9 @@ public interface Piece {
 
     Player.Color getColor();
 
+    /** Returns {@literal true} when current piece can be eat by some opponent's piece */
+    boolean isUnderPressure(GameContext context);
+
     /** Retrieves available moves for the current piece. */
     Set<String> getNextMoveCellIds(GameContext context);
 

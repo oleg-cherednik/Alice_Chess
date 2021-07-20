@@ -39,6 +39,14 @@ abstract class AbstractPiece implements Piece {
         return Board.Cell.getCellId(col, row);
     }
 
+    @Override
+    public boolean isUnderPressure(GameContext context) {
+        Player opponentPlayer = context.getOpponentPlayer();
+        Piece opponentKing = opponentPlayer.getPiece(id);
+        Board.Cell cell = context.getBoard().getCell(opponentKing.getCellId());
+        return !cell.isNeutralOrUnderPressureBy(opponentKing.getColor());
+    }
+
     /**
      * <ul>
      * Piece can move only if:
@@ -62,7 +70,7 @@ abstract class AbstractPiece implements Piece {
             if (toCell.isEmpty())
                 cellIds.add(toCell.getId());
             else {
-                Player.Color currentPlayer = context.getCurrentPlayer();
+                Player.Color currentPlayer = context.getCurrentPlayer().getColor();
 
                 if (toCell.getPiece().getColor() != currentPlayer)
                     cellIds.add(toCell.getId());

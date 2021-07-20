@@ -17,7 +17,9 @@ public interface GameContext {
 
     Board getBoard();
 
-    Player.Color getCurrentPlayer();
+    Player getCurrentPlayer();
+
+    Player getOpponentPlayer();
 
     default boolean whitePlayerBottom() {
         return true;

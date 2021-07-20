@@ -111,10 +111,9 @@ public final class Processor {
     private boolean checkMatePosition(GameContext context) {
         Player opponentPlayer = getOpponentPlayer();
         Piece king = opponentPlayer.getPiece(Piece.Id.KING_E);
-        Board.Cell cell = context.getBoard().getCell(king.getCellId());
 
         // not a mate when king's cell is not under the opponent player pressure
-        if (!cell.isUnderPressureBy(currentPlayer.getColor()))
+        if (!king.isUnderPressure(context))
             return false;
 
         Set<String> cellIds = king.getNextMoveCellIds(context);
@@ -141,7 +140,7 @@ public final class Processor {
             moveNo++;
     }
 
-    private Player getOpponentPlayer() {
+    public Player getOpponentPlayer() {
         if (currentPlayer == playerWhite)
             return playerBlack;
         if (currentPlayer == playerBlack)

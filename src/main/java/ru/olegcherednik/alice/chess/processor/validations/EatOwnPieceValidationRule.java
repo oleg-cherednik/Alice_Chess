@@ -2,8 +2,8 @@ package ru.olegcherednik.alice.chess.processor.validations;
 
 import ru.olegcherednik.alice.chess.GameContext;
 import ru.olegcherednik.alice.chess.exceptions.ChessException;
-import ru.olegcherednik.alice.chess.processor.Ply;
 import ru.olegcherednik.alice.chess.piece.Piece;
+import ru.olegcherednik.alice.chess.processor.Ply;
 
 /**
  * @author Oleg Cherednik
@@ -17,7 +17,7 @@ final class EatOwnPieceValidationRule implements ValidationRule {
         String toCellId = Ply.getToCellId(strPly);
         Piece piece = context.getBoard().getCell(toCellId).getPiece();
 
-        if (piece.getColor() == context.getCurrentPlayer())
+        if (piece.getColor() == context.getCurrentPlayer().getColor())
             throw new ChessException(String.format("Piece '%s' on cell '%s' can't eat an own piece on cell '%s'",
                     piece.getType().getTitle(), fromCellId, toCellId));
     }
